@@ -1,0 +1,68 @@
+name: pharmago_patient
+description: A new Flutter project.
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.1.5 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  flutter_bloc: ^8.1.3
+  cached_network_image: ^3.2.3
+  get_it: ^7.6.0
+  injectable: ^2.1.1
+  json_annotation: ^4.8.1
+  freezed_annotation: ^2.2.0
+  freezed: ^2.3.4
+  async: ^2.10.0
+  auto_route: ^7.8.3
+  equatable: ^2.0.5
+  intl:
+  dio: ^5.3.2
+  shared_preferences: ^2.0.15
+  flutter_svg: ^1.1.6
+  google_sign_in: ^6.1.5
+  firebase_auth: ^4.9.0
+  firebase_core: ^2.15.1
+  loading_animation_widget: ^1.2.0+4
+  syncfusion_flutter_datepicker: ^20.4.44
+  lottie: ^2.7.0
+  pin_code_fields: ^8.0.1
+  dotted_border: ^2.1.0
+  image_picker: ^1.0.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  build_runner: ^2.2.0
+  injectable_generator: ^2.1.5
+  json_serializable: ^6.6.2
+  auto_route_generator: ^7.1.1
+  flutter_lints: ^2.0.0
+  flutter_launcher_icons: ^0.11.0
+
+
+# The following section is specific to Flutter packages.
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/imgs/
+    - assets/imgs/login/
+    - assets/icons/
+    - assets/icons/noti/
+    - assets/icons/bottom_bar/
+
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter/Inter-Regular.ttf
+        - asset: assets/fonts/Inter/Inter-Bold.ttf
+        - asset: assets/fonts/Inter/Inter-Medium.ttf
