@@ -34,7 +34,7 @@ class _MyAppState extends State<MyApp> {
       },
       // routerConfig: _appRouter.config(),
       routerDelegate: _appRouter.delegate(
-        // initialRoutes: _mapRouteToPageRouteInfo(),
+        initialRoutes: _mapRouteToPageRouteInfo(),
         // navigatorObservers: () => [AppNavigatorObserver()],
       ),
       routeInformationParser: _appRouter.defaultRouteParser(),
@@ -60,12 +60,12 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  // List<PageRouteInfo> _mapRouteToPageRouteInfo() {
-  //   final token = AppSharedPreference.instance.getValue(PrefKeys.token);
-  //   if (token == null) {
-  //     return [const WelcomeRoute()];
-  //   } else {
-  //     return [const WorkSpaceRoute()];
-  //   }
-  // }
+  List<PageRouteInfo> _mapRouteToPageRouteInfo() {
+    final token = AppSharedPreference.instance.getValue(PrefKeys.token);
+    if (token == null) {
+      return [const LoginRoute()];
+    } else {
+      return [const HomeRoute()];
+    }
+  }
 }

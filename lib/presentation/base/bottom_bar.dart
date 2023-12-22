@@ -10,10 +10,9 @@ import '../constants/spacing.dart';
 
 enum TabCode {
   home('Trang chủ', '/bottom_bar/ic_home.svg', ''),
-  product('Sản phẩm', '/bottom_bar/ic_product.svg', ''),
-  orderSell('Bán hàng', '/bottom_bar/ic_order_sell.svg', ''),
-  staff('Nhân viên', '/bottom_bar/ic_staff.svg', ''),
-  menu('Menu', '/bottom_bar/ic_menu.svg', '');
+  health('HS Sức khoẻ', '/bottom_bar/ic_health.svg', ''),
+  drugstore('Nhà thuốc', '/bottom_bar/ic_drugstore.svg', ''),
+  persional('Cá nhân', '/bottom_bar/ic_persional.svg', '');
 
   const TabCode(this.title, this.pathIcon, this.pathIconActive);
 
@@ -54,36 +53,36 @@ class BuildBottomBar extends StatelessWidget {
         child: GridView(
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: TabCode.values.where((e) => e != TabCode.staff || role == PrefKeys.codeAdmin).toList().length,
+            crossAxisCount: TabCode.values.toList().length,
           ),
-          children: TabCode.values.where((e) => e != TabCode.staff || role == PrefKeys.codeAdmin).toList()
-              .map(
-                (e) => InkWell(
-                  onTap: () {
-                    onTap?.call(e);
-                  },
-                  child: Column(
-                    children: [
-                      SvgPicture.asset(
-                        '${AssetsPath.icon}${e.pathIcon}',
-                        width: sp20,
+          children: TabCode.values.toList()
+            .map(
+              (e) => InkWell(
+                onTap: () {
+                  onTap?.call(e);
+                },
+                child: Column(
+                  children: [
+                    SvgPicture.asset(
+                      '${AssetsPath.icon}${e.pathIcon}',
+                      width: sp20,
+                      color: pageCode == e ? mainColor : greyColor,
+                    ),
+                    const SizedBox(height: sp8),
+                    Text(
+                      e.title,
+                      style: TextStyle(
+                        fontSize: 8,
+                        fontWeight:
+                            pageCode == e ? FontWeight.w500 : FontWeight.w400,
                         color: pageCode == e ? mainColor : greyColor,
                       ),
-                      const SizedBox(height: sp8),
-                      Text(
-                        e.title,
-                        style: TextStyle(
-                          fontSize: 8,
-                          fontWeight:
-                              pageCode == e ? FontWeight.w500 : FontWeight.w400,
-                          color: pageCode == e ? mainColor : greyColor,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              )
-              .toList(),
+              ),
+            )
+            .toList(),
         ),
       ),
     );

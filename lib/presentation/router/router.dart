@@ -7,26 +7,21 @@ import 'router.gr.dart';
 class AppRouter extends $AppRouter {
   @override
   List<AutoRoute> get routes => [
-
     // ========== Authentication ===========
-    // AutoRoute(page: WelcomeRoute.page),
-    // AutoRoute(page: LoginRoute.page),
-    // AutoRoute(page: RegisterRoute.page),
-    // AutoRoute(page: VerifyAccountRoute.page),
-    // AutoRoute(page: TypeAccountRoute.page),
+    AutoRoute(page: LoginRoute.page), 
+    AutoRoute(page: RegisterRoute.page),
+    AutoRoute(page: VerifyAccountRoute.page),
 
-    // // ========== Company
-    // AutoRoute(page: CreateCompanyRoute.page),
-    // AutoRoute(page: WorkSpaceRoute.page),
+    // Home Page
+    AutoRoute(page: HomeRoute.page),
 
-    // AutoRoute(page: HomeRoute.page),
+    // Health
+    AutoRoute(page: HealthRecordRoute.page),
 
+    // Drugstore
+    AutoRoute(page: DrugstoreRoute.page),
 
-    // // =========== Product ===========
-    // AutoRoute(page: ProductDetailRoute.page),
-    // AutoRoute(page: ProductCreateRoute.page),
-
-    // // =========== Product ===========
-    // AutoRoute(page: OrderCreateRoute.page)
+    //Personal
+    AutoRoute(page: PersionalRoute.page),
   ];
 }

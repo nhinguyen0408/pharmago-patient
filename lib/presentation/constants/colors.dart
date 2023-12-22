@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-const Color mainColor = Color(0xFF00A66A);
+const Color mainColor = Color(0xFF039855);
 
 const Color accentColor_1 = Color(0xFF7895CB);
 const Color accentColor_2 = Color(0xFFA0BFE0);
@@ -19,7 +19,7 @@ const Color borderColor_4 = Color(0xFF797777);
 
 const Color red_1 = Color(0xFFEF4949);
 const Color red_2 = Color(0xFFFEEDED);
-const Color green_1 = Color(0xFF02CD6B);
+const Color green_1 = Color(0xFF039855);
 const Color green_2 = Color(0xFFEDFEF6);
 const Color blue_1 = Color(0xFF499FEF);
 const Color blue_2 = Color(0xFFEDF6FE);
