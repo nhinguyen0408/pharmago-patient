@@ -25,10 +25,7 @@ class PersionalHomeCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Container(
-            width: 44,
-            height: 44,
-            decoration: const BoxDecoration(shape: BoxShape.circle),
+          CircleAvatar(
             child: Image.asset(
               'assets/imgs/logo.png',
               width: 44,

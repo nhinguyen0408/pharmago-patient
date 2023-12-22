@@ -18,4 +18,10 @@ class Api {
   static String persionalProfile = '$baseURL/api/account/v1/profile/';
 
   static String refreshToken = '$baseURL/api/account/v1/refreshToken';
+
+  // Drugstore
+  static String drugstoreList = '$baseURL/api/v1/workspaces/';
+
+  // Product
+  static String productList = '$baseURL/api/v1/products/';
 }
