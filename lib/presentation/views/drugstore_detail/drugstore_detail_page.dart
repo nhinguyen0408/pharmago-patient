@@ -12,6 +12,7 @@ import 'package:pharmago_patient/presentation/views/drugstore_detail/cubit/drugs
 import 'package:pharmago_patient/presentation/views/drugstore_detail/cubit/drugstore_detail_state.dart';
 import 'package:pharmago_patient/presentation/views/drugstore_detail/widgets/drugstore_infor_cart.dart';
 import 'package:pharmago_patient/presentation/views/product_list/domain/entities/variant_entity.dart';
+import 'package:pharmago_patient/presentation/views/product_list/widgets/variant_card.dart';
 import 'package:pharmago_patient/shared/views/empty_container.dart';
 
 @RoutePage()
@@ -36,41 +37,44 @@ class _DrugstoreDetailPageState extends State<DrugstoreDetailPage> {
           body: SafeArea(
             child: Stack(
               children: [
+                Container(
+                  height: heightDevice(context),
+                  width: widthDevice(context),
+                  padding: const EdgeInsets.all(sp16),
+                  child: SingleChildScrollView(
+                    physics: const PageScrollPhysics(),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 132),
+                        const Row(
+                          children: [
+                            Text('Sản phẩm', style: p3),
+                          ],
+                        ),
+                        const SizedBox(height: sp16),
+                        InfiniteList<VariantEntity>(
+                          shrinkWrap: true,
+                          getData: (page) => bloc.getListVariantOfDrugstore(page: page + 1, drugstore: widget.id,),
+                          noItemFoundWidget: const EmptyContainer(),
+                          itemBuilder: (context, item, index) {
+                            return InkWell(
+                              onTap: () {},
+                              child: VariantCart(data: item, dataDrugstore: state.dataDrugstore ?? const DrugstoreEntity()),
+                            );
+                          },
+                          scrollController: bloc.scrollController,
+                          infiniteListController: bloc.infiniteListController,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
                 Positioned(
                   top: 0,
                   left: 0,
                   right: 0,
                   child:
                     DrugstoreInformationCard(data: state.dataDrugstore, cubit: bloc),
-                ),
-                Container(
-                  height: heightDevice(context),
-                  width: widthDevice(context),
-                  padding: const EdgeInsets.all(sp16),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 130),
-                      const Row(
-                        children: [
-                          Text('Sản phẩm', style: p3),
-                        ],
-                      ),
-                      const SizedBox(height: sp16),
-                      InfiniteList<VariantEntity>(
-                        shrinkWrap: true,
-                        getData: (page) => bloc.getListVariantOfDrugstore(page: page + 1, drugstore: widget.id,),
-                        noItemFoundWidget: const EmptyContainer(),
-                        itemBuilder: (context, item, index) {
-                          return InkWell(
-                            onTap: () {},
-                            child: Text(item.title ?? 'Null'),
-                          );
-                        },
-                        scrollController: bloc.scrollController,
-                        infiniteListController: bloc.infiniteListController,
-                      )
-                    ],
-                  ),
                 ),
               ],
             ),

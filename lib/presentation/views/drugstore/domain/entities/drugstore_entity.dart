@@ -15,5 +15,6 @@ class DrugstoreEntity with _$DrugstoreEntity {
     dynamic updatedBy,
     double? lat,
     double? long,
+    String? phone,
   }) = _DrugstoreEntity;
 }

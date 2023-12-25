@@ -14,9 +14,25 @@ class VariantMapper extends BaseDataMapper<VariantModel, VariantEntity> {
         sku: data?.sku,
         image: data?.image,
         active: data?.active,
-        units: data?.units,
+        units: data?.units != null 
+          ? 
+            data!.units!.map((e) => UnitEntity(
+              id: e.id,
+              timeCreated: e.timeCreated,
+              timeUpdated: e.timeUpdated,
+              title: e.title,
+              capitalPrice: e.capitalPrice,
+              price: e.price,
+              weight: e.weight,
+              weightUnit: e.weightUnit,
+              classic: e.classic,
+              createdBy: e.createdBy,
+              updatedBy: e.updatedBy,
+            )).toList()
+          : null,
         addition: data?.addition,
         title: data?.title,
+        description: data?.description,
     );
   }
 }

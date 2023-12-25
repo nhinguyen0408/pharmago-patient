@@ -28,7 +28,7 @@ class MainButton extends StatelessWidget {
           horizontal: largeButton ? sp16 : 0,
         ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(sp12),
+          borderRadius: BorderRadius.circular(sp6),
         ),
       ),
       onPressed: () {
@@ -77,7 +77,7 @@ class ExtraButton extends StatelessWidget {
               vertical: largeButton ? sp16 : sp8,
               horizontal: largeButton ? sp16 : sp12),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(sp12)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(sp6)),
           side: BorderSide(color: borderColor ?? borderColor_2, width: 1)),
       onPressed: () {
         event?.call();

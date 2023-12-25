@@ -10,4 +10,8 @@ abstract class VariantRepository {
     DateTime? createdFrom,
     DateTime? createdTo,
   });
+
+  Future<BaseResponseModel<VariantModel>> getDetailVariant({
+    String? id,
+  });
 }

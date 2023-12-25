@@ -24,5 +24,8 @@ class AppRouter extends $AppRouter {
 
     //Personal
     AutoRoute(page: PersionalRoute.page),
+
+    // Product & Variant
+    AutoRoute(page: VariantDetailRoute.page),
   ];
 }

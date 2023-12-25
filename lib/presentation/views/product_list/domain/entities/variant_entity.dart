@@ -10,8 +10,27 @@ class VariantEntity with _$VariantEntity {
     dynamic sku,
     String? image,
     String? title,
+    String? description,
     bool? active,
-    List<dynamic>? units,
+    List<UnitEntity>? units,
     dynamic addition,
   }) = _VariantEntity;
+}
+
+
+@freezed
+class UnitEntity with _$UnitEntity {
+  const factory UnitEntity({
+    int? id,
+    String? timeCreated,
+    String? timeUpdated,
+    String? title,
+    double? capitalPrice,
+    double? price,
+    int? weight,
+    dynamic weightUnit,
+    bool? classic,
+    dynamic createdBy,
+    dynamic updatedBy,
+  }) = _UnitEntity;
 }

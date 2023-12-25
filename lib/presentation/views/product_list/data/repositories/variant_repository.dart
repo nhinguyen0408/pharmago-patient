@@ -52,4 +52,25 @@ class VariantRepositoryImpl implements VariantRepository {
       );
     }
   }
+  
+  @override
+  Future<BaseResponseModel<VariantModel>> getDetailVariant({String? id}) async {
+    try {
+      final res = await _dio.dio().get('${Api.variantList}$id/');
+      final data = VariantModel.fromJson(res.data['data']['data']);
+      return BaseResponseModel(
+        code: res.data['code'],
+        message: res.data['message'],
+        data: data,
+      );
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error =============================================== \n $e');
+      }
+      return BaseResponseModel(
+        code: 400,
+        message: e.toString(),
+      );
+    }
+  }
 }

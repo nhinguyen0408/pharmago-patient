@@ -19,6 +19,8 @@ const Color borderColor_4 = Color(0xFF797777);
 
 const Color red_1 = Color(0xFFEF4949);
 const Color red_2 = Color(0xFFFEEDED);
+const Color red_3 = Color(0xFFD92D20);
+
 const Color green_1 = Color(0xFF039855);
 const Color green_2 = Color(0xFFEDFEF6);
 const Color blue_1 = Color(0xFF499FEF);
