@@ -7,7 +7,6 @@ import 'package:pharmago_patient/presentation/constants/size_device.dart';
 import 'package:pharmago_patient/presentation/constants/spacing.dart';
 import 'package:pharmago_patient/presentation/constants/typography.dart';
 import 'package:pharmago_patient/presentation/di/di.dart';
-import 'package:pharmago_patient/presentation/router/router.gr.dart';
 import 'package:pharmago_patient/presentation/views/drugstore/drugstore_page.dart';
 import 'package:pharmago_patient/presentation/views/drugstore/widgets/drugstore_card.dart';
 import 'package:pharmago_patient/presentation/views/health_record/health_record_page.dart';

@@ -24,4 +24,5 @@ class Api {
 
   // Product
   static String productList = '$baseURL/api/v1/products/';
+  static String variantList = '$baseURL/api/v1/variants/';
 }

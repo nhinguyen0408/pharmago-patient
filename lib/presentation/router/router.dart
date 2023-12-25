@@ -20,6 +20,7 @@ class AppRouter extends $AppRouter {
 
     // Drugstore
     AutoRoute(page: DrugstoreRoute.page),
+    AutoRoute(page: DrugstoreDetailRoute.page),
 
     //Personal
     AutoRoute(page: PersionalRoute.page),

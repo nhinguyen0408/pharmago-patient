@@ -7,4 +7,8 @@ abstract class DrugstoreRepository {
     required int? limit,
     String? keySearch,
   });
+
+  Future<BaseResponseModel<DrugstoreModel>> getDetailDrugstores({
+    required String id,
+  });
 }

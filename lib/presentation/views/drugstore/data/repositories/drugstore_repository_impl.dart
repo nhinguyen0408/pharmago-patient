@@ -43,4 +43,25 @@ class DrugstoreRepositoryImpl implements DrugstoreRepository {
       );
     }
   }
+  
+  @override
+  Future<BaseResponseModel<DrugstoreModel>> getDetailDrugstores({required String id}) async {
+    try {
+      final res = await _dio.dio().get('${Api.drugstoreList}$id/');
+      final data =  DrugstoreModel.fromJson(res.data['data']);
+      return BaseResponseModel(
+        code: res.data['code'],
+        message: res.data['message'],
+        data: data,
+      );
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error =============================================== \n $e');
+      }
+      return BaseResponseModel(
+        code: 400,
+        message: e.toString(),
+      );
+    }
+  }
 }

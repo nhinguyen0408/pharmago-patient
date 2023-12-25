@@ -22,6 +22,8 @@ class GetListProductUsecase
         page: input.page,
         limit: input.limit,
         keySearch: input.search,
+        workspace: input.drugstore,
+        orderBy: input.orderBy,
       );
       final dataEntity = _productMapper.mapToListEntity(res.data);
       return GetListProductOutput(BaseResponseModel<List<ProductEntity>>(
