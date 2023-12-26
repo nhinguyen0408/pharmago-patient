@@ -9,11 +9,13 @@ import 'package:pharmago_patient/presentation/constants/size_device.dart';
 import 'package:pharmago_patient/presentation/constants/spacing.dart';
 import 'package:pharmago_patient/presentation/constants/typography.dart';
 import 'package:pharmago_patient/presentation/di/di.dart';
+import 'package:pharmago_patient/presentation/router/router.gr.dart';
 import 'package:pharmago_patient/presentation/views/drugstore/domain/entities/drugstore_entity.dart';
 import 'package:pharmago_patient/presentation/views/product_list/domain/entities/variant_entity.dart';
 import 'package:pharmago_patient/presentation/views/variant_detail/cubit/variant_detail_cubit.dart';
 import 'package:pharmago_patient/presentation/views/variant_detail/cubit/variant_detail_state.dart';
 import 'package:pharmago_patient/presentation/views/variant_detail/widget/drugstore_of_variant_cart.dart';
+import 'package:pharmago_patient/shared/utils/dialog_utils.dart';
 import 'package:pharmago_patient/shared/utils/event.dart';
 
 @RoutePage()
@@ -180,143 +182,185 @@ class _VariantDetailPageState extends State<VariantDetailPage> {
         return BlocBuilder<VariantDetailCubit, VariantDetailState>(
             bloc: bloc,
             builder: (context, state) {
-          return Container(
-            padding: const EdgeInsets.all(sp16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
+              return Container(
+                padding: const EdgeInsets.all(sp16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    const SizedBox(height: sp8),
-                    const Text(
-                      'Lựa chọn',
-                      style: p6,
-                    ),
-                    const Spacer(),
-                    SizedBox(
-                        width: 100,
-                        child: Row(children: [
-                          InkWell(
-                            onTap: () {
-                              onChangeQuantity(-1);
-                            },
-                            child: const Icon(
-                              Icons.remove_circle_outline,
-                              color: greyColor,
-                            ),
-                          ),
-                          const Spacer(),
-                          Text(state.quantityAddCart.toString()),
-                          const Spacer(),
-                          InkWell(
-                            onTap: () {
-                              onChangeQuantity(1);
-                            },
-                            child: const Icon(
-                              Icons.add_circle_outline,
-                              color: greyColor,
-                            ),
-                          ),
-                        ])),
-                  ],
-                ),
-                const SizedBox(height: sp16),
-                const Text('Đơn vị'),
-                const SizedBox(height: sp16),
-                Wrap(
-                  spacing: 8.0,
-                  runSpacing: 8.0,
-                  children: state.dataVariant?.units != null &&
-                          state.dataVariant!.units!.isNotEmpty
-                      ? state.dataVariant!.units!
-                          .map(
-                            (e) => InkWell(
-                              onTap: () => bloc.onSelectUnit(e.id),
-                              child: UnitCard(
-                                data: e,
-                                acctive: state.unitSelected == e.id,
+                    Row(
+                      children: [
+                        const SizedBox(height: sp8),
+                        const Text(
+                          'Lựa chọn',
+                          style: p6,
+                        ),
+                        const Spacer(),
+                        SizedBox(
+                          width: 100,
+                          child: Row(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  onChangeQuantity(-1);
+                                },
+                                child: const Icon(
+                                  Icons.remove_circle_outline,
+                                  color: greyColor,
+                                ),
                               ),
-                            ),
+                              const Spacer(),
+                              Text(state.quantityAddCart.toString()),
+                              const Spacer(),
+                              InkWell(
+                                onTap: () {
+                                  onChangeQuantity(1);
+                                },
+                                child: const Icon(
+                                  Icons.add_circle_outline,
+                                  color: greyColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: sp16),
+                    const Text('Đơn vị'),
+                    const SizedBox(height: sp16),
+                    Wrap(
+                      spacing: 8.0,
+                      runSpacing: 8.0,
+                      children: state.dataVariant?.units != null &&
+                              state.dataVariant!.units!.isNotEmpty
+                          ? state.dataVariant!.units!
+                              .map(
+                                (e) => InkWell(
+                                  onTap: () => bloc.onSelectUnit(e.id),
+                                  child: UnitCard(
+                                    data: e,
+                                    acctive: state.unitSelected == e.id,
+                                  ),
+                                ),
+                              )
+                              .toList()
+                          : [],
+                    ),
+                    const SizedBox(height: sp16),
+                    isAddCart != null && isAddCart
+                        ? Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: ExtraButton(
+                                  event: () {
+                                    _buyNow(context);
+                                  },
+                                  largeButton: true,
+                                  icon: const Icon(
+                                    Icons.shopping_bag_outlined,
+                                    size: 17,
+                                    color: blackColor,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: sp16,
+                              ),
+                              Expanded(
+                                flex: 6,
+                                child: MainButton(
+                                  title: 'Thêm vào giỏ hàng',
+                                  event: () {
+                                    _addCart(context);
+                                  },
+                                  largeButton: true,
+                                  icon: null,
+                                ),
+                              ),
+                            ],
                           )
-                          .toList()
-                      : [],
-                ),
-                const SizedBox(height: sp16),
-                
-                isAddCart != null && isAddCart ? 
-                  Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: ExtraButton(
-                        event: () {
-                          bloc.buyNow(context);
-                        },
-                        largeButton: true,
-                        icon: const Icon(
-                          Icons.shopping_bag_outlined,
-                          size: 18,
-                          color: blackColor,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: sp16,
-                    ),
-                    Expanded(
-                      flex: 6,
-                      child: MainButton(
-                        title: 'Thêm vào giỏ hàng',
-                        event: () {
-                          bloc.addCart(context);
-                        },
-                        largeButton: true,
-                        icon: null,
-                      ),
-                    ),
-                  ],
-                )
-                :
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: ExtraButton(
-                        event: () {
-                          bloc.addCart(context);
-                        },
-                        largeButton: true,
-                        icon: const Icon(
-                          Icons.shopping_cart_outlined,
-                          size: 18,
-                          color: blackColor,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: sp16,
-                    ),
-                    Expanded(
-                      flex: 6,
-                      child: MainButton(
-                        title: 'Mua ngay',
-                        event: () {
-                          bloc.buyNow(context);
-                        },
-                        largeButton: true,
-                        icon: null,
-                      ),
-                    ),
+                        : Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: ExtraButton(
+                                  event: () {
+                                    _addCart(context);
+                                  },
+                                  largeButton: true,
+                                  icon: const Icon(
+                                    Icons.shopping_cart_outlined,
+                                    size: 17,
+                                    color: blackColor,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: sp16,
+                              ),
+                              Expanded(
+                                flex: 6,
+                                child: MainButton(
+                                  title: 'Mua ngay',
+                                  event: () {
+                                    _buyNow(context);
+                                  },
+                                  largeButton: true,
+                                  icon: null,
+                                ),
+                              ),
+                            ],
+                          ),
                   ],
                 ),
-              ],
-            ),
-          );
-        });
+              );
+            });
       },
     );
   }
+
+  Future<void> _addCart(BuildContext context) async {
+    if (bloc.checkQuantityVariant()) {
+      DialogUtils.showLoadingDialog(
+        context,
+        content: 'Đang thêm vào giỏ hàng',
+      );
+      final res = await bloc.addCart();
+      // ignore: use_build_context_synchronously
+      Navigator.of(context).pop();
+      if (res.code == 200 && context.mounted) {
+        DialogUtils.showSuccessDialog(
+          context,
+          barrierDismissible: false,
+          content: 'Thêm sản phẩm vào giỏ hàng thành công',
+          titleConfirm: 'Đến Giỏ hàng',
+          titleClose: 'OK',
+          accept: () {
+            Navigator.pop(context);
+            context.router.push(const CartRoute());
+          },
+          close: () {
+            Navigator.pop(context);
+          },
+        );
+      } else {
+        // ignore: use_build_context_synchronously
+        DialogUtils.showErrorDialog(
+          context,
+          content: 'Thêm sản phẩm vào giỏ hàng thất bại',
+        );
+      }
+    } else {
+      DialogUtils.showErrorDialog(
+        context,
+        content: 'Vui lòng chọn số lượng và đơn vị',
+      );
+    }
+  }
+
+  void _buyNow(BuildContext context) {}
 }
 
 class UnitCard extends StatelessWidget {

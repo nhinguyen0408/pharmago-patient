@@ -35,6 +35,31 @@ class _DrugstorePageState extends State<DrugstorePage> {
             body: SafeArea(
               child: Stack(
                 children: [
+                  Container(
+                    height: heightDevice(context),
+                    width: widthDevice(context),
+                    padding: const EdgeInsets.all(sp16),
+                    child: Column(
+                      children: [
+                        SizedBox(height: state.showSearch ? 100 : 60),
+                        InfiniteList<DrugstoreEntity>(
+                          shrinkWrap: true,
+                          getData: (page) =>
+                              drugstoreBloc.getAllDrugstores(page: page + 1),
+                          noItemFoundWidget: const EmptyContainer(),
+                          itemBuilder: (context, item, index) {
+                            return InkWell(
+                              onTap: () {},
+                              child: DrugstoreCard(data: item),
+                            );
+                          },
+                          scrollController: drugstoreBloc.scrollController,
+                          infiniteListController:
+                              drugstoreBloc.infiniteListController,
+                        )
+                      ],
+                    ),
+                  ),
                   Positioned(
                     top: 0,
                     left: 0,
@@ -94,29 +119,6 @@ class _DrugstorePageState extends State<DrugstorePage> {
                           ),
                         ],
                       ),
-                    ),
-                  ),
-                  Container(
-                    height: heightDevice(context),
-                    width: widthDevice(context),
-                    padding: const EdgeInsets.all(sp16),
-                    child: Column(
-                      children: [
-                        SizedBox(height: state.showSearch ? 100 : 60),
-                        InfiniteList<DrugstoreEntity>(
-                          shrinkWrap: true,
-                          getData: (page) => drugstoreBloc.getAllDrugstores(page: page + 1),
-                          noItemFoundWidget: const EmptyContainer(),
-                          itemBuilder: (context, item, index) {
-                            return InkWell(
-                              onTap: () {},
-                              child: DrugstoreCard(data: item),
-                            );
-                          },
-                          scrollController: drugstoreBloc.scrollController,
-                          infiniteListController: drugstoreBloc.infiniteListController,
-                        )
-                      ],
                     ),
                   ),
                 ],

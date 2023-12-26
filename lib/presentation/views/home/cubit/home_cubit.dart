@@ -1,10 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:pharmago_patient/data/models/base/response.dart';
 import 'package:pharmago_patient/presentation/base/bottom_bar.dart';
 import 'package:pharmago_patient/presentation/views/authentication/domain/entities/persional_profile_entity.dart';
 import 'package:pharmago_patient/presentation/views/authentication/domain/usecase/get_persional_profile_use_case.dart';
-import 'package:pharmago_patient/presentation/views/drugstore/domain/entities/drugstore_entity.dart';
+import 'package:pharmago_patient/presentation/views/cart/domain/usecase/get_data_cart_use_case.dart';
 import 'package:pharmago_patient/presentation/views/drugstore/domain/usecase/get_list_drugstore_use_case.dart';
 import 'package:pharmago_patient/presentation/views/home/cubit/home_state.dart';
 import 'package:pharmago_patient/shared/constants/pref_key.dart';
@@ -12,13 +11,19 @@ import 'package:pharmago_patient/shared/constants/storage/shared_preference.dart
 
 @injectable
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit(this._persionalProfileUsecase, this._getListDrugstoreUsecase) : super(HomeState());
+  HomeCubit(
+    this._persionalProfileUsecase,
+    this._getListDrugstoreUsecase,
+    this._getDataCartUsecase,
+  ) : super(HomeState());
 
   final PersionalProfileUsecase _persionalProfileUsecase;
   final GetListDrugstoreUsecase _getListDrugstoreUsecase;
+  final GetDataCartUsecase _getDataCartUsecase;
 
   void ininttialize() async {
-    final userData = AppSharedPreference.instance.getValue(PrefKeys.user) as int?;
+    final userData =
+        AppSharedPreference.instance.getValue(PrefKeys.user) as int?;
     final userFullName =
         AppSharedPreference.instance.getValue(PrefKeys.username) as String?;
     if (userData == null) {
@@ -42,6 +47,7 @@ class HomeCubit extends Cubit<HomeState> {
       );
     }
     getAllDrugstores();
+    getDataCart();
   }
 
   void onPageChange(TabCode page) {
@@ -59,5 +65,15 @@ class HomeCubit extends Cubit<HomeState> {
     final res = await _getListDrugstoreUsecase.buildUseCase(input);
     final listDrugstores = res.response.data ?? [];
     emit(state.copyWith(listDrugstores: listDrugstores));
+  }
+
+  void getDataCart() async {
+    final input = GetDataCartInput();
+    final res = await _getDataCartUsecase.buildUseCase(input);
+    final listDataCart = res.response.data ?? [];
+    emit(state.copyWith(
+      dataCart: listDataCart,
+      countItemCart: res.response.extra,
+    ));
   }
 }

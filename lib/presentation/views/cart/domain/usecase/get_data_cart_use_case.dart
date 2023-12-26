@@ -10,7 +10,6 @@ import 'package:pharmago_patient/presentation/views/cart/domain/repositories/car
 @injectable
 class GetDataCartUsecase
     extends BaseFutureUseCase<GetDataCartInput, GetDataCartOutput> {
-
       final CartRepository _cartRepository;
       final CartMapping _cartMapping;
 

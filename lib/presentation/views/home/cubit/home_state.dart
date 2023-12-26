@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pharmago_patient/presentation/base/bottom_bar.dart';
 import 'package:pharmago_patient/presentation/views/authentication/domain/entities/persional_profile_entity.dart';
+import 'package:pharmago_patient/presentation/views/cart/domain/entities/cart_entity.dart';
 import 'package:pharmago_patient/presentation/views/drugstore/domain/entities/drugstore_entity.dart';
 
 part 'home_state.freezed.dart';
@@ -12,5 +13,7 @@ class HomeState with _$HomeState {
     @Default(TabCode.home) TabCode pageSelected,
     @Default(null) PersionalProfileEntity? dataUser,
     @Default([]) List<DrugstoreEntity> listDrugstores,
+    @Default([]) List<CartEntity> dataCart,
+    @Default(0) int? countItemCart,
   }) = _HomeState;
 }

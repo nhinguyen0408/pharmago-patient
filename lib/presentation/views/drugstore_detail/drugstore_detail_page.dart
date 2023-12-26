@@ -17,8 +17,13 @@ import 'package:pharmago_patient/shared/views/empty_container.dart';
 
 @RoutePage()
 class DrugstoreDetailPage extends StatefulWidget {
-  const DrugstoreDetailPage({super.key, required this.id});
+  const DrugstoreDetailPage({
+    super.key,
+    required this.id,
+    this.countItemCart = 0,
+  });
   final String id;
+  final int countItemCart;
 
   @override
   State<DrugstoreDetailPage> createState() => _DrugstoreDetailPageState();
@@ -29,58 +34,69 @@ class _DrugstoreDetailPageState extends State<DrugstoreDetailPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<DrugstoreDetailCubit>(
-      create: (context) =>
-          bloc..innitialize(drugstore: widget.id),
+      create: (context) => bloc..innitialize(drugstore: widget.id),
       child: BlocBuilder<DrugstoreDetailCubit, DrugstoreDetailState>(
-        builder: (context, state) => Scaffold(
-          backgroundColor: bg_5,
-          body: SafeArea(
-            child: Stack(
-              children: [
-                Container(
-                  height: heightDevice(context),
-                  width: widthDevice(context),
-                  padding: const EdgeInsets.all(sp16),
-                  child: SingleChildScrollView(
-                    physics: const PageScrollPhysics(),
-                    child: Column(
+          builder: (context, state) => Scaffold(
+                backgroundColor: bg_5,
+                body: SafeArea(
+                  child: GestureDetector(
+                    onTap: () => FocusScope.of(context).unfocus(),
+                    child: Stack(
                       children: [
-                        const SizedBox(height: 132),
-                        const Row(
-                          children: [
-                            Text('Sản phẩm', style: p3),
-                          ],
+                        Container(
+                          height: heightDevice(context),
+                          width: widthDevice(context),
+                          padding: const EdgeInsets.all(sp16),
+                          child: SingleChildScrollView(
+                            controller: bloc.scrollController,
+                            physics: const PageScrollPhysics(),
+                            child: Column(
+                              children: [
+                                const SizedBox(height: 132),
+                                const Row(
+                                  children: [
+                                    Text('Sản phẩm', style: p3),
+                                  ],
+                                ),
+                                const SizedBox(height: sp16),
+                                InfiniteList<VariantEntity>(
+                                  shrinkWrap: true,
+                                  itemPerLine: 2,
+                                  getData: (page) =>
+                                      bloc.getListVariantOfDrugstore(
+                                    page: page + 1,
+                                    drugstore: widget.id,
+                                  ),
+                                  noItemFoundWidget: const EmptyContainer(),
+                                  itemBuilder: (context, item, index) {
+                                    return VariantCart(
+                                        data: item,
+                                        dataDrugstore: state.dataDrugstore ??
+                                            const DrugstoreEntity());
+                                  },
+                                  scrollController: bloc.scrollController,
+                                  infiniteListController:
+                                      bloc.infiniteListController,
+                                )
+                              ],
+                            ),
+                          ),
                         ),
-                        const SizedBox(height: sp16),
-                        InfiniteList<VariantEntity>(
-                          shrinkWrap: true,
-                          getData: (page) => bloc.getListVariantOfDrugstore(page: page + 1, drugstore: widget.id,),
-                          noItemFoundWidget: const EmptyContainer(),
-                          itemBuilder: (context, item, index) {
-                            return InkWell(
-                              onTap: () {},
-                              child: VariantCart(data: item, dataDrugstore: state.dataDrugstore ?? const DrugstoreEntity()),
-                            );
-                          },
-                          scrollController: bloc.scrollController,
-                          infiniteListController: bloc.infiniteListController,
-                        )
+                        Positioned(
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          child: DrugstoreInformationCard(
+                            data: state.dataDrugstore,
+                            cubit: bloc,
+                            countItemCart: widget.countItemCart,
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ),
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child:
-                    DrugstoreInformationCard(data: state.dataDrugstore, cubit: bloc),
-                ),
-              ],
-            ),
-          ),
-        )
-      ),
+              )),
     );
   }
 }

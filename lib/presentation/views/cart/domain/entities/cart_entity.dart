@@ -9,7 +9,8 @@ class CartEntity with _$CartEntity {
   const factory CartEntity({
     int? id,
     int? quantity,
-    String? unit,
+    UnitEntity? unit,
     VariantEntity? variant,
+    @Default(false) bool selected,
   }) = _CartEntity;
 }

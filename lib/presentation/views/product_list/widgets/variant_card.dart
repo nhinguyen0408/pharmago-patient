@@ -21,9 +21,14 @@ class VariantCart extends StatelessWidget {
       onTap: () {
         context.router.push(VariantDetailRoute(id: data.id.toString(), dataDrugstore: dataDrugstore));
       },
-      child: BaseContainer(
-        context,
-        Column(
+      child: Container(
+        padding: const EdgeInsets.all(sp16),
+        height: 300,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(sp8),
+          color: whiteColor,
+        ),
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(

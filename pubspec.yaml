@@ -61,9 +61,16 @@ flutter:
     - assets/icons/noti/
     - assets/icons/bottom_bar/
 
+  # fonts:
+  #   - family: Inter
+  #     fonts:
+  #       - asset: assets/fonts/Inter/Inter-Regular.ttf
+  #       - asset: assets/fonts/Inter/Inter-Bold.ttf
+  #       - asset: assets/fonts/Inter/Inter-Medium.ttf
+
   fonts:
-    - family: Inter
+    - family: SanFra
       fonts:
-        - asset: assets/fonts/Inter/Inter-Regular.ttf
-        - asset: assets/fonts/Inter/Inter-Bold.ttf
-        - asset: assets/fonts/Inter/Inter-Medium.ttf
+        - asset: assets/fonts/San Francisco/SanFranciscoText-Regular.otf
+        - asset: assets/fonts/San Francisco/SanFranciscoText-Medium.otf
+        - asset: assets/fonts/San Francisco/SanFranciscoText-Bold.otf

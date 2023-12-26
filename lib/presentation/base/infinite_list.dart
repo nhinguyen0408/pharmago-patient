@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 typedef ItemWidgetBuilder<ItemType> = Widget Function(
@@ -24,6 +23,7 @@ class InfiniteList<ItemType> extends StatefulWidget {
     required this.infiniteListController,
     this.heightGap,
     this.animate = false,
+    this.itemPerLine = 1,
   }) : super(key: key);
 
   final Future<List<ItemType>> Function(int) getData;
@@ -36,13 +36,13 @@ class InfiniteList<ItemType> extends StatefulWidget {
   final InfiniteListController<ItemType> infiniteListController;
   final double? heightGap;
   final bool animate;
+  final int itemPerLine;
 
   @override
   State<InfiniteList<ItemType>> createState() => _InfiniteListState<ItemType>();
 }
 
 class _InfiniteListState<ItemType> extends State<InfiniteList<ItemType>> {
-
   @override
   void initState() {
     widget.infiniteListController
@@ -68,6 +68,11 @@ class _InfiniteListState<ItemType> extends State<InfiniteList<ItemType>> {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    /*24 is for notification bar on Android*/
+    final double itemHeight = (size.height - kToolbarHeight - 24) / 2;
+    final double itemWidth = size.width / 2;
+
     return ValueListenableBuilder<PagingState<ItemType>>(
       valueListenable: widget.infiniteListController,
       builder: (context, pagingState, child) {
@@ -77,31 +82,74 @@ class _InfiniteListState<ItemType> extends State<InfiniteList<ItemType>> {
             pageSize: widget.pageSize,
           );
         }
-        return ListView.separated(
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: widget.shrinkWrap,
-          controller: !widget.shrinkWrap ? widget.scrollController : null,
-          itemBuilder: (context, index) {
-            if (pagingState.listItem.isEmpty && !pagingState.isLoading) {
-              return widget.noItemFoundWidget ?? const Text("no data");
-            } else if (index < pagingState.listItem.length) {
-              return (widget.itemBuilder)(
-                context,
-                pagingState.listItem[index],
-                index,
+        return widget.itemPerLine > 1
+            ? ListView.separated(
+                shrinkWrap: widget.shrinkWrap,
+                controller: !widget.shrinkWrap ? widget.scrollController : null,
+                itemCount: (pagingState.listItem.length / 2).ceil() + 1,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  if (pagingState.listItem.isEmpty && !pagingState.isLoading) {
+                    return widget.noItemFoundWidget ?? const Text("no data");
+                  } else {
+                    return GridView.count(
+                      shrinkWrap: widget.shrinkWrap,
+                      crossAxisCount: widget.itemPerLine, // Two items per row
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      childAspectRatio: (itemWidth / itemHeight) + 0.05,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: List.generate(
+                        widget.itemPerLine, // Number of items per row
+                        (i) {
+                          final itemIndex = index * widget.itemPerLine + i;
+                          if (itemIndex < pagingState.listItem.length) {
+                            return (widget.itemBuilder)(
+                              context,
+                              pagingState.listItem[itemIndex],
+                              itemIndex,
+                            );
+                          } else if (pagingState.hasMore) {
+                            return Center(
+                                child: widget.circularProgressIndicator);
+                          }
+                          return pagingState.isLoading
+                              ? Center(child: widget.circularProgressIndicator)
+                              : const SizedBox.shrink();
+                        },
+                      ),
+                    );
+                  }
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return SizedBox(height: widget.heightGap ?? 16);
+                },
+              )
+            : ListView.separated(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: widget.shrinkWrap,
+                controller: !widget.shrinkWrap ? widget.scrollController : null,
+                itemBuilder: (context, index) {
+                  if (pagingState.listItem.isEmpty && !pagingState.isLoading) {
+                    return widget.noItemFoundWidget ?? const Text("no data");
+                  } else if (index < pagingState.listItem.length) {
+                    return (widget.itemBuilder)(
+                      context,
+                      pagingState.listItem[index],
+                      index,
+                    );
+                  } else if (pagingState.hasMore) {
+                    return Center(child: widget.circularProgressIndicator);
+                  }
+                  return pagingState.isLoading
+                      ? Center(child: widget.circularProgressIndicator)
+                      : const SizedBox.shrink();
+                },
+                itemCount: pagingState.listItem.length + 1,
+                separatorBuilder: (BuildContext context, int index) {
+                  return SizedBox(height: widget.heightGap ?? 16);
+                },
               );
-            } else if (pagingState.hasMore) {
-              return Center(child: widget.circularProgressIndicator);
-            }
-            return pagingState.isLoading
-                ? Center(child: widget.circularProgressIndicator)
-                : const SizedBox.shrink();
-          },
-          itemCount: pagingState.listItem.length + 1,
-          separatorBuilder: (BuildContext context, int index) {
-            return SizedBox(height: widget.heightGap ?? 16);
-          },
-        );
       },
     );
   }

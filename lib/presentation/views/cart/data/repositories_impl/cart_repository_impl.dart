@@ -53,7 +53,7 @@ class CartRepositoryImpl implements CartRepository {
   @override
   Future<BaseResponseModel<List<CartModel>>> getCart() async {
     try {
-      final res = await _dio.dio().get(Api.drugstoreList);
+      final res = await _dio.dio().get(Api.cart);
       final data = (res.data['data']['items'] as List).map((e) => CartModel.fromJson(e)).toList();
       return BaseResponseModel(
         code: res.data['code'],

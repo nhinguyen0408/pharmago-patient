@@ -28,4 +28,7 @@ class Api {
 
   // Cart
   static String cart = '$baseURL/api/v1/cart-items/';
+
+  // Address
+  static String address = '$baseURL/v1/api/address/';
 }

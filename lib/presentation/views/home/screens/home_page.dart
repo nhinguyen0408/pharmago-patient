@@ -82,87 +82,92 @@ class _HomeState extends State<Home> {
       body: SafeArea(
         child: Stack(
           children: [
+            SingleChildScrollView(
+              child: Container(
+                height: heightDevice(context),
+                width: widthDevice(context),
+                padding: const EdgeInsets.all(sp16),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 80),
+                    // Row(
+                    //   children: [
+                    //     const Text('Gợi ý sản phẩm', style: p3),
+                    //     const Spacer(),
+                    //     InkWell(
+                    //       onTap: () {
+                    //         widget.homeCubit.onPageChange(TabCode.drugstore);
+                    //       },
+                    //       child: Text(
+                    //         'Xem tất cả',
+                    //         style: p5.copyWith(color: mainColor),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+                    // const SizedBox(height: sp16),
+                    // Column(
+                    //   crossAxisAlignment: CrossAxisAlignment.start,
+                    //   children: [
+                    //     ListView.separated(
+                    //       shrinkWrap: true,
+                    //       itemCount: widget.homeCubit.state.listDrugstores.length,
+                    //       separatorBuilder: (BuildContext context, int index) {
+                    //         return const SizedBox(height: sp8);
+                    //       },
+                    //       itemBuilder: (BuildContext context, int index) {
+                    //         final item = widget.homeCubit.state.listDrugstores[index];
+                    //         return DrugstoreCard(data: item);
+                    //       },
+                    //     ),
+                    //   ],
+                    // ),
+                    // const SizedBox(height: 80),
+                    Row(
+                      children: [
+                        const Text('Nhà thuốc gần đây', style: p3),
+                        const Spacer(),
+                        InkWell(
+                          onTap: () {
+                            widget.homeCubit.onPageChange(TabCode.drugstore);
+                          },
+                          child: Text(
+                            'Xem tất cả',
+                            style: p5.copyWith(color: mainColor),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: sp16),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ListView.separated(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount:
+                              widget.homeCubit.state.listDrugstores.length,
+                          separatorBuilder: (BuildContext context, int index) {
+                            return const SizedBox(height: sp8);
+                          },
+                          itemBuilder: (BuildContext context, int index) {
+                            final item =
+                                widget.homeCubit.state.listDrugstores[index];
+                            return DrugstoreCard(data: item, countItemCart: widget.homeCubit.state.dataCart.length);
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
             Positioned(
               top: 0,
               left: 0,
               right: 0,
               child:
-                  PersionalHomeCard(dataUser: widget.homeCubit.state.dataUser),
-            ),
-            Container(
-              height: heightDevice(context),
-              width: widthDevice(context),
-              padding: const EdgeInsets.all(sp16),
-              child: Column(
-                children: [
-                  const SizedBox(height: 80),
-                  // Row(
-                  //   children: [
-                  //     const Text('Gợi ý sản phẩm', style: p3),
-                  //     const Spacer(),
-                  //     InkWell(
-                  //       onTap: () {
-                  //         widget.homeCubit.onPageChange(TabCode.drugstore);
-                  //       },
-                  //       child: Text(
-                  //         'Xem tất cả',
-                  //         style: p5.copyWith(color: mainColor),
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-                  // const SizedBox(height: sp16),
-                  // Column(
-                  //   crossAxisAlignment: CrossAxisAlignment.start,
-                  //   children: [
-                  //     ListView.separated(
-                  //       shrinkWrap: true,
-                  //       itemCount: widget.homeCubit.state.listDrugstores.length,
-                  //       separatorBuilder: (BuildContext context, int index) {
-                  //         return const SizedBox(height: sp8); 
-                  //       },
-                  //       itemBuilder: (BuildContext context, int index) {
-                  //         final item = widget.homeCubit.state.listDrugstores[index];
-                  //         return DrugstoreCard(data: item);
-                  //       },
-                  //     ),
-                  //   ],
-                  // ),
-                  // const SizedBox(height: 80),
-                  Row(
-                    children: [
-                      const Text('Nhà thuốc gần đây', style: p3),
-                      const Spacer(),
-                      InkWell(
-                        onTap: () {
-                          widget.homeCubit.onPageChange(TabCode.drugstore);
-                        },
-                        child: Text(
-                          'Xem tất cả',
-                          style: p5.copyWith(color: mainColor),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: sp16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ListView.separated(
-                        shrinkWrap: true,
-                        itemCount: widget.homeCubit.state.listDrugstores.length,
-                        separatorBuilder: (BuildContext context, int index) {
-                          return const SizedBox(height: sp8); 
-                        },
-                        itemBuilder: (BuildContext context, int index) {
-                          final item = widget.homeCubit.state.listDrugstores[index];
-                          return DrugstoreCard(data: item);
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                  PersionalHomeCard(dataUser: widget.homeCubit.state.dataUser, countItemCart: widget.homeCubit.state.dataCart.length,),
             ),
           ],
         ),

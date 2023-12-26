@@ -1,9 +1,7 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:pharmago_patient/presentation/constants/colors.dart';
 import 'package:pharmago_patient/presentation/constants/spacing.dart';
 import 'package:pharmago_patient/presentation/constants/typography.dart';
-import 'package:pharmago_patient/presentation/router/router.gr.dart';
 import 'package:pharmago_patient/presentation/views/drugstore/domain/entities/drugstore_entity.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -21,8 +19,6 @@ class DrugstoreOfVariantCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () =>
-          {context.router.push(DrugstoreDetailRoute(id: data.id.toString()))},
       child: Stack(
         children: [
           Row(

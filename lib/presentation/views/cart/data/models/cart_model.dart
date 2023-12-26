@@ -9,7 +9,7 @@ String cartModelToJson(CartModel data) => json.encode(data.toJson());
 class CartModel {
     final int? id;
     final int? quantity;
-    final String? unit;
+    final UnitModel? unit;
     final VariantModel? variant;
 
     CartModel({
@@ -22,7 +22,7 @@ class CartModel {
     CartModel copyWith({
         int? id,
         int? quantity,
-        String? unit,
+        UnitModel? unit,
         VariantModel? variant,
     }) => 
         CartModel(
@@ -35,7 +35,7 @@ class CartModel {
     factory CartModel.fromJson(Map<String, dynamic> json) => CartModel(
         id: json["id"],
         quantity: json["quantity"],
-        unit: json["unit"],
+        unit: json["unit"] == null ? null : UnitModel.fromJson(json['unit']),
         variant: json["variant"] == null ? null : VariantModel.fromJson(json["variant"]),
     );
 

@@ -1,17 +1,21 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+import 'package:pharmago_patient/data/models/base/response.dart';
+import 'package:pharmago_patient/presentation/views/cart/domain/entities/cart_entity.dart';
+import 'package:pharmago_patient/presentation/views/cart/domain/usecase/add_cart_usecase.dart';
 import 'package:pharmago_patient/presentation/views/product_list/domain/entities/variant_entity.dart';
 import 'package:pharmago_patient/presentation/views/product_list/domain/usecase/get_variant_detail_use_case.dart';
 import 'package:pharmago_patient/presentation/views/variant_detail/cubit/variant_detail_state.dart';
-import 'package:pharmago_patient/shared/utils/dialog_utils.dart';
 
 @injectable
 class VariantDetailCubit extends Cubit<VariantDetailState> {
-  VariantDetailCubit(this._detailVariantUsecase)
-      : super(const VariantDetailState());
+  VariantDetailCubit(
+    this._detailVariantUsecase,
+    this._addCartUsecase,
+  ) : super(const VariantDetailState());
 
   final GetDetailVariantUsecase _detailVariantUsecase;
+  final AddCartUsecase _addCartUsecase;
 
   void innitialize({required String variantId}) {
     getDetailVariant(id: variantId);
@@ -44,29 +48,22 @@ class VariantDetailCubit extends Cubit<VariantDetailState> {
     emit(state.copyWith(unitSelected: unitId));
   }
 
-  void addCart(BuildContext context) {
-    if (checkQuantityVariant(context)) {
-      Navigator.pop(context);
-      DialogUtils.showSuccessDialog(
-        context,
-        barrierDismissible: false,
-        content: 'Thêm sản phẩm vào giỏ hàng thành công',
-        titleConfirm: 'OK',
-        accept: () {
-          Navigator.pop(context);
-        },
-      );
-      emit(state.copyWith(
-        quantityAddCart: 0,
-        unitSelected: null,
-      ));
-
-    }
+  Future<BaseResponseModel<CartEntity?>> addCart() async {
+    final AddCartInput input = AddCartInput(
+      variant: state.dataVariant!.id!,
+      unit: state.unitSelected!,
+      quantity: state.quantityAddCart,
+    );
+    final res = await _addCartUsecase.buildUseCase(input);
+    emit(state.copyWith(
+      quantityAddCart: 0,
+      unitSelected: null,
+    ));
+    return res.response;
   }
 
-  void buyNow(BuildContext context) {
-    if (checkQuantityVariant(context)) {
-      Navigator.pop(context);
+  void buyNow() {
+    if (checkQuantityVariant()) {
       emit(state.copyWith(
         quantityAddCart: 0,
         unitSelected: null,
@@ -74,15 +71,9 @@ class VariantDetailCubit extends Cubit<VariantDetailState> {
     }
   }
 
-  bool checkQuantityVariant(BuildContext context) {
+  bool checkQuantityVariant() {
     final bool check;
     check = state.quantityAddCart > 0 && state.unitSelected != null;
-    if (!check) {
-      DialogUtils.showErrorDialog(
-        context,
-        content: 'Vui lòng chọn số lượng và đơn vị',
-      );
-    }
     return check;
   }
 }
