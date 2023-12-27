@@ -8,9 +8,12 @@ import 'package:pharmago_patient/presentation/constants/size_device.dart';
 import 'package:pharmago_patient/presentation/constants/spacing.dart';
 import 'package:pharmago_patient/presentation/constants/typography.dart';
 import 'package:pharmago_patient/presentation/di/di.dart';
+import 'package:pharmago_patient/presentation/router/router.gr.dart';
 import 'package:pharmago_patient/presentation/views/cart/cubit/cart_cubit.dart';
 import 'package:pharmago_patient/presentation/views/cart/cubit/cart_state.dart';
 import 'package:pharmago_patient/presentation/views/cart/widgets/vartant_card_for_cart.dart';
+import 'package:pharmago_patient/presentation/views/drugstore/domain/entities/drugstore_entity.dart';
+import 'package:pharmago_patient/shared/utils/dialog_utils.dart';
 import 'package:pharmago_patient/shared/utils/event.dart';
 
 @RoutePage()
@@ -49,10 +52,12 @@ class _CartPageState extends State<CartPage> {
                             return VariantCardForCart(
                               dataVariant: item,
                               onChangeQuantity: (int value) {
-                                bloc.onChangeQuantity(variant: item, value: value);
+                                bloc.onChangeQuantity(
+                                    variant: item, value: value);
                               },
                               onCheckbox: (bool? value) {
-                                bloc.onSelectItem(indexVariant: index, value: value!);
+                                bloc.onSelectItem(
+                                    indexVariant: index, value: value!);
                               },
                             );
                           },
@@ -142,26 +147,30 @@ class _CartPageState extends State<CartPage> {
             bottomNavigationBar: Container(
               padding: const EdgeInsets.all(sp16),
               decoration: const BoxDecoration(
-                boxShadow: [ 
-                  BoxShadow(
-                    blurRadius: 16,
-                    offset: Offset(0, 4),
-                    color: Color.fromRGBO(0, 0, 0, 0.05)
-                  ),
-                ],
-                border: Border(
-                  top: BorderSide(color: borderColor_2),
-                )
-              ),
+                  boxShadow: [
+                    BoxShadow(
+                        blurRadius: 16,
+                        offset: Offset(0, 4),
+                        color: Color.fromRGBO(0, 0, 0, 0.05)),
+                  ],
+                  border: Border(
+                    top: BorderSide(color: borderColor_2),
+                  )),
               width: widthDevice(context),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
                     children: [
-                      Text('Tổng (${state.listDataCartSelected.length} sản phẩm)', style: p5.copyWith(color: greyColor),),
+                      Text(
+                        'Tổng (${state.listDataCartSelected.length} sản phẩm)',
+                        style: p5.copyWith(color: greyColor),
+                      ),
                       const Spacer(),
-                      Text('${FormatCurrency(state.totalPrice)} VNĐ', style: p3,),
+                      Text(
+                        '${FormatCurrency(state.totalPrice)} VNĐ',
+                        style: p3,
+                      ),
                     ],
                   ),
                   const SizedBox(height: sp16),
@@ -169,7 +178,9 @@ class _CartPageState extends State<CartPage> {
                     width: double.infinity,
                     child: MainButton(
                       title: 'Đặt hàng',
-                      event: () {},
+                      event: () {
+                        _buyNow(context);
+                      },
                     ),
                   ),
                 ],
@@ -179,5 +190,19 @@ class _CartPageState extends State<CartPage> {
         },
       ),
     );
+  }
+
+  void _buyNow(
+    BuildContext context,
+  ) {
+    final data = bloc.state.listDataCartSelected;
+    if (data.isNotEmpty) {
+      context.router.push(OrderCreateRoute(dataCart: data, drugstore: const DrugstoreEntity()));
+    } else {
+      DialogUtils.showErrorDialog(
+        context,
+        content: 'Vui Lòng chọn ít nhất 1 sản phẩm',
+      );
+    }
   }
 }

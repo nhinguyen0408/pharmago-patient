@@ -37,3 +37,4 @@ const Color bg_2 = Color(0xFFE4E3E3);
 const Color bg_3 = Color(0xFF0A0909);
 const Color bg_4 = Color(0xFFF5F5F5);
 const Color bg_5 = Color(0xFFF8F9FC);
+const Color bg_6 = Color(0xFFF2F4F7);

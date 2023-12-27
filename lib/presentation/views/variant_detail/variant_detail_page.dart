@@ -10,6 +10,7 @@ import 'package:pharmago_patient/presentation/constants/spacing.dart';
 import 'package:pharmago_patient/presentation/constants/typography.dart';
 import 'package:pharmago_patient/presentation/di/di.dart';
 import 'package:pharmago_patient/presentation/router/router.gr.dart';
+import 'package:pharmago_patient/presentation/views/cart/domain/entities/cart_entity.dart';
 import 'package:pharmago_patient/presentation/views/drugstore/domain/entities/drugstore_entity.dart';
 import 'package:pharmago_patient/presentation/views/product_list/domain/entities/variant_entity.dart';
 import 'package:pharmago_patient/presentation/views/variant_detail/cubit/variant_detail_cubit.dart';
@@ -360,7 +361,30 @@ class _VariantDetailPageState extends State<VariantDetailPage> {
     }
   }
 
-  void _buyNow(BuildContext context) {}
+  void _buyNow(BuildContext context) {
+    if (bloc.checkQuantityVariant()) {
+      final List<CartEntity> data = [
+        CartEntity(
+          quantity: bloc.state.quantityAddCart,
+          unit: bloc.state.listUnits.firstWhere((element) =>
+              bloc.state.unitSelected != null &&
+              element.id == bloc.state.unitSelected),
+          variant: bloc.state.dataVariant,
+          drugstore: widget.dataDrugstore,
+        ),
+      ];
+      context.router.push(OrderCreateRoute(
+        dataCart: data,
+        drugstore: widget.dataDrugstore,
+        canChangeQuantity: true,
+      ));
+    } else {
+      DialogUtils.showErrorDialog(
+        context,
+        content: 'Vui lòng chọn số lượng và đơn vị',
+      );
+    }
+  }
 }
 
 class UnitCard extends StatelessWidget {

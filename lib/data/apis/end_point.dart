@@ -31,4 +31,7 @@ class Api {
 
   // Address
   static String address = '$baseURL/v1/api/address/';
+
+  // Order
+  static String order = '$baseURL/api/v1/orders/';
 }

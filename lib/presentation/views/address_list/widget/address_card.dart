@@ -61,7 +61,7 @@ class AddressCard extends StatelessWidget {
                   Expanded(
                       child: ExtraButton(
                     title: 'Địa chỉ mặc định',
-                    event: () {},
+                    event: onHandel,
                     largeButton: false,
                     icon: const Icon(
                       Icons.check,

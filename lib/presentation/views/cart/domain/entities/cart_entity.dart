@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pharmago_patient/presentation/views/drugstore/domain/entities/drugstore_entity.dart';
 import 'package:pharmago_patient/presentation/views/product_list/domain/entities/variant_entity.dart';
 part 'cart_entity.freezed.dart';
 
@@ -11,6 +12,7 @@ class CartEntity with _$CartEntity {
     int? quantity,
     UnitEntity? unit,
     VariantEntity? variant,
+    DrugstoreEntity? drugstore,
     @Default(false) bool selected,
   }) = _CartEntity;
 }

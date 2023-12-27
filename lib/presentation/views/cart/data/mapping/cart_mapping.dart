@@ -2,10 +2,14 @@ import 'package:injectable/injectable.dart';
 import 'package:pharmago_patient/data/mapper/base/data_mapper.dart';
 import 'package:pharmago_patient/presentation/views/cart/data/models/cart_model.dart';
 import 'package:pharmago_patient/presentation/views/cart/domain/entities/cart_entity.dart';
+import 'package:pharmago_patient/presentation/views/drugstore/data/mapper/drugstore_mapper.dart';
 import 'package:pharmago_patient/presentation/views/product_list/domain/entities/variant_entity.dart';
 
 @injectable
 class CartMapping extends BaseDataMapper<CartModel, CartEntity> {
+  final DrugstoreMapper _drugstoreMapper;
+
+  CartMapping(this._drugstoreMapper);
   @override
   CartEntity mapToEntity(CartModel? data) {
     return CartEntity(
@@ -21,6 +25,7 @@ class CartMapping extends BaseDataMapper<CartModel, CartEntity> {
         price: data?.variant?.price,
         id: data?.variant?.id,
       ),
+      drugstore: _drugstoreMapper.mapToEntity(data?.drugstore),
     );
   }
 }

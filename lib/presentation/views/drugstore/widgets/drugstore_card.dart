@@ -7,15 +7,25 @@ import 'package:pharmago_patient/presentation/router/router.gr.dart';
 import 'package:pharmago_patient/presentation/views/drugstore/domain/entities/drugstore_entity.dart';
 
 class DrugstoreCard extends StatelessWidget {
-  const DrugstoreCard({super.key, required this.data, this.countItemCart = 0});
+  const DrugstoreCard({
+    super.key,
+    required this.data,
+    this.countItemCart = 0,
+    this.canClick = true,
+  });
   final DrugstoreEntity data;
   final int countItemCart;
+  final bool canClick;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => {
-        context.router.push(DrugstoreDetailRoute(id: data.id.toString(), countItemCart: countItemCart,))
+        if (canClick)
+          context.router.push(DrugstoreDetailRoute(
+            id: data.id.toString(),
+            countItemCart: countItemCart,
+          ))
       },
       child: Container(
         padding: const EdgeInsets.all(sp16),
@@ -30,7 +40,6 @@ class DrugstoreCard extends StatelessWidget {
             ),
           ],
         ),
-          
         child: Stack(
           children: [
             Row(

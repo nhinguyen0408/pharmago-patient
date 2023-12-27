@@ -37,6 +37,8 @@ dependencies:
   dotted_border: ^2.1.0
   image_picker: ^1.0.5
   url_launcher: ^6.0.13
+  # expandable
+  expandable: ^5.0.1
 
 dev_dependencies:
   flutter_test:

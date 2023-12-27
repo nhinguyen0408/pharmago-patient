@@ -27,7 +27,7 @@ run_watch_delete_conflict:
 	fvm flutter packages pub run build_runner watch --delete-conflicting-outputs
 
 build_apk_dev:
-	flutter build apk --dart-define=DART_DEFINES_BASE_URL="https://core.kafa.pro"
+	flutter build apk --dart-define=DART_DEFINES_BASE_URL_HTTP="http://159.223.40.42:8000"
 
 build_apk_pro:
 	fvm flutter build apk --dart-define=DART_DEFINES_APP_NAME="Mykiot" --dart-define=DART_DEFINES_BASE_URL="https://api.kafa.pro"
@@ -36,7 +36,7 @@ build_appbundle:
 	fvm flutter build appbundle --dart-define=DART_DEFINES_APP_NAME="Mykiot" --dart-define=DART_DEFINES_BASE_URL="https://api.kafa.pro"
 
 build_ios:
-	flutter build ios --dart-define=DART_DEFINES_BASE_URL="https://api.kafa.pro"
+	flutter build ios --dart-define=DART_DEFINES_BASE_URL_HTTP="http://159.223.40.42:8000"
 
 build_runner:
 	flutter packages pub run build_runner watch --delete-conflicting-outputs

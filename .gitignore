@@ -52,4 +52,4 @@ app.*.map.json
 .fvm/flutter_sdk
 
 # pub lock
-pubspec.lock3
+pubspec.lock

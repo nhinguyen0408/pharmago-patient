@@ -33,6 +33,7 @@ class DrugstoreDetailCubit extends Cubit<DrugstoreDetailState> {
 
   void onChangeKeySearchVariant(String? value) {
     emit(state.copyWith(keySearchVariant: value));
+    infiniteListController.onRefresh();
   }
 
   Future<List<ProductEntity>> getListProductsOfDrugstore({

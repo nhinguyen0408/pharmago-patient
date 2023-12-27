@@ -9,19 +9,16 @@ import 'package:pharmago_patient/presentation/constants/typography.dart';
 import 'package:pharmago_patient/presentation/di/di.dart';
 import 'package:pharmago_patient/presentation/views/address_list/cubit/address_list_cubit.dart';
 import 'package:pharmago_patient/presentation/views/address_list/cubit/address_list_state.dart';
-import 'package:pharmago_patient/presentation/views/address_list/domain/entities/address_entity.dart';
-import 'package:pharmago_patient/presentation/views/address_list/widget/address_card.dart';
-import 'package:pharmago_patient/shared/utils/dialog_utils.dart';
 
 @RoutePage()
-class AddressListPage extends StatefulWidget {
-  const AddressListPage({super.key});
+class OrderListPage extends StatefulWidget {
+  const OrderListPage({super.key});
 
   @override
-  State<AddressListPage> createState() => _AddressListPageState();
+  State<OrderListPage> createState() => _OrderListPageState();
 }
 
-class _AddressListPageState extends State<AddressListPage> {
+class _OrderListPageState extends State<OrderListPage> {
   final bloc = getIt.get<AddressListCubit>();
   @override
   Widget build(BuildContext context) {
@@ -44,26 +41,7 @@ class _AddressListPageState extends State<AddressListPage> {
                             child: Column(
                               children: [
                                 const SizedBox(height: 60),
-                                ListView.separated(
-                                  shrinkWrap: true,
-                                  physics: const BouncingScrollPhysics(),
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    final item = state.listAddress[index];
-                                    return AddressCard(
-                                      data: item,
-                                      onHandel: () {
-                                        _setAddressDefault(context, item);
-                                      },
-                                    );
-                                  },
-                                  separatorBuilder:
-                                      (BuildContext context, int index) {
-                                    return const SizedBox(height: sp16);
-                                  },
-                                  itemCount: state.listAddress.length,
-                                )
-                              ],
+                                ],
                             ),
                           ),
                         ),
@@ -100,7 +78,7 @@ class _AddressListPageState extends State<AddressListPage> {
                                 ),
                               ),
                               const SizedBox(width: sp8),
-                              const Text('Địa chỉ', style: h5),
+                              const Text('Đặt hàng', style: h5),
                               const Spacer(),
                             ],
                           ),
@@ -115,26 +93,5 @@ class _AddressListPageState extends State<AddressListPage> {
         },
       ),
     );
-  }
-
-  void _setAddressDefault(
-    BuildContext context,
-    AddressEntity address,
-  ) async {
-    DialogUtils.showLoadingDialog(
-      context,
-      content: 'Đang đặt mặc định',
-    );
-    final res = await bloc.setDefaultAddress(address: address);
-    Navigator.of(context).pop();
-    if (!res) {
-      // ignore: use_build_context_synchronously
-      DialogUtils.showErrorDialog(
-        context,
-        content: 'Đặt mặc định thất bại !',
-      );
-    } else {
-      bloc.getListAddress();
-    }
   }
 }
