@@ -25,6 +25,7 @@ const Color green_1 = Color(0xFF039855);
 const Color green_2 = Color(0xFFEDFEF6);
 const Color blue_1 = Color(0xFF499FEF);
 const Color blue_2 = Color(0xFFEDF6FE);
+const Color blue_3 = Color(0xFF1570EF);
 // const Color purple_1 = Color(0xFF7E52FF);
 // const Color purple_2 = Color(0xFFEEEAFC);
 const Color yellow_1 = Color(0xFFFFA149);

@@ -52,17 +52,26 @@ class OrderCreateCubit extends Cubit<OrderCreateState> {
   }
 
   onChangeQuantityItem(int indexOrderItem, int indexVariant, int value) {
-    final quantity = state.orderItems[indexOrderItem].orderItems[indexVariant].quantity;
-    if(quantity != null && quantity > 1) {
-      List<OrderItemForCreateOrderType> array = List<OrderItemForCreateOrderType>.from(state.orderItems);
+    final quantity =
+        state.orderItems[indexOrderItem].orderItems[indexVariant].quantity;
+    if (quantity != null && quantity > 1) {
+      List<OrderItemForCreateOrderType> array =
+          List<OrderItemForCreateOrderType>.from(state.orderItems);
       final newQuantity = quantity + value;
-      CartEntity updatedItem = array[indexOrderItem].orderItems[indexVariant].copyWith(quantity: newQuantity);
-      // array[indexOrderItem].orderItems[indexVariant] = updatedItem;
-      List<CartEntity> listVariant = List.from(array[indexOrderItem].orderItems);
+      CartEntity updatedItem = array[indexOrderItem]
+          .orderItems[indexVariant]
+          .copyWith(quantity: newQuantity);
+      List<CartEntity> listVariant =
+          List.from(array[indexOrderItem].orderItems);
       listVariant[indexVariant] = updatedItem;
-      array[indexOrderItem] = array[indexOrderItem].copyWith(orderItems: listVariant) ;
+      array[indexOrderItem] = array[indexOrderItem].copyWith(
+        orderItems: listVariant,
+        totalPrice: countPrice(listVariant),
+      );
+      final totalPrice = array.fold(0, (previousValue, element) => previousValue += element.totalPrice);
       emit(state.copyWith(
         orderItems: array,
+        totalPrice: totalPrice,
       ));
     }
   }

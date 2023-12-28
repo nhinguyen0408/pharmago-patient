@@ -34,4 +34,5 @@ class Api {
 
   // Order
   static String order = '$baseURL/api/v1/orders/';
+  static String updateStatusOrder = '$baseURL/api/v1/orders-status/';
 }

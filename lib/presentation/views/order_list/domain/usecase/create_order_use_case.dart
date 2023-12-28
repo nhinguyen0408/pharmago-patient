@@ -25,10 +25,8 @@ class CreateOrderUsecase
         note: input.note,
         cartItems: input.cartItems,
       );
-      final dataEntity = _orderMapper.mapToEntity(res.data);
       return CreateOrderOutput(BaseResponseModel<OrderEntity?>(
         code: res.code,
-        data: dataEntity,
         message: res.message,
         extra: res.extra,
       ));

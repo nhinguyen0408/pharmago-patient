@@ -16,6 +16,7 @@ import 'package:pharmago_patient/presentation/views/drugstore/widgets/drugstore_
 import 'package:pharmago_patient/presentation/views/order_create/cubit/order_create_cubit.dart';
 import 'package:pharmago_patient/presentation/views/order_create/cubit/order_create_state.dart';
 import 'package:pharmago_patient/presentation/views/order_create/widgets/variant_create_order_card.dart';
+import 'package:pharmago_patient/presentation/views/order_list/domain/repositories/order_repository.dart';
 import 'package:pharmago_patient/shared/utils/dialog_utils.dart';
 import 'package:pharmago_patient/shared/utils/event.dart';
 import 'package:pharmago_patient/shared/views/empty_container.dart';
@@ -422,7 +423,7 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
           titleClose: 'Quay lại',
           accept: () {
             Navigator.of(context).pop();
-            context.router.replace(const OrderListRoute());
+            context.router.replace(OrderListRoute(status: StatusOrder.NEW));
           },
           close: () {
             Navigator.pop(context);

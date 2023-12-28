@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:pharmago_patient/presentation/views/address_list/data/models/address_model.dart';
+import 'package:pharmago_patient/presentation/views/drugstore/data/models/drugstore_model.dart';
+import 'package:pharmago_patient/presentation/views/order_list/data/models/order_count_model.dart';
 import 'package:pharmago_patient/presentation/views/product_list/data/models/variant_model.dart';
 
 OrderModel orderModelFromJson(String str) =>
@@ -10,53 +13,74 @@ String orderModelToJson(OrderModel data) => json.encode(data.toJson());
 class OrderModel {
   final int? id;
   final String? code;
-  final int? workspace;
-  final int? address;
+  final DrugstoreModel? workspace;
+  final dynamic address;
+  final AddressModel? addressData;
   final int? account;
   final int? totalItem;
-  final int? totalCost;
+  final double? totalCost;
   final List<OrderItem>? items;
+  final String? note;
+  final CountOrderModel? status;
 
   OrderModel({
     this.id,
     this.code,
     this.workspace,
     this.address,
+    this.addressData,
     this.account,
     this.totalItem,
     this.totalCost,
     this.items,
+    this.note,
+    this.status,
   });
 
   OrderModel copyWith({
     int? id,
     String? code,
-    int? workspace,
-    int? address,
+    DrugstoreModel? workspace,
+    dynamic address,
+    AddressModel? addressData,
     int? account,
     int? totalItem,
-    int? totalCost,
+    double? totalCost,
     List<OrderItem>? items,
+    String? note,
+    CountOrderModel? status,
   }) =>
       OrderModel(
         id: id ?? this.id,
         code: code ?? this.code,
         workspace: workspace ?? this.workspace,
         address: address ?? this.address,
+        addressData: addressData ?? this.addressData,
         account: account ?? this.account,
         totalItem: totalItem ?? this.totalItem,
         totalCost: totalCost ?? this.totalCost,
         items: items ?? this.items,
+        note: note ?? this.note,
+        status: status ?? this.status,
       );
 
   factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
         id: json['id'],
         code: json['code'],
-        workspace: json['workspace'],
+        workspace: json['workspace'] == null
+            ? null
+            : DrugstoreModel.fromJson(json['workspace']),
         address: json['address'],
+        addressData: num.tryParse(json['address'].toString()) != null
+            ? null
+            : AddressModel.fromJson(json['address']),
         account: json['account'],
         totalItem: json['total_item'],
         totalCost: json['total_cost'],
+        note: json['note'],
+        status: json['status'] == null
+            ? null
+            : CountOrderModel.fromJson(json['status']),
         items: json['items'] == null
             ? []
             : List<OrderItem>.from(
@@ -66,7 +90,8 @@ class OrderModel {
   Map<String, dynamic> toJson() => {
         'id': id,
         'code': code,
-        'workspace': workspace,
+        'note': note,
+        'workspace': workspace?.toJson(),
         'address': address,
         'account': account,
         'total_item': totalItem,
@@ -104,8 +129,9 @@ class OrderItem {
       );
 
   factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(
-        variant:
-            json['variant'] == null ? null : VariantModel.fromJson(json['variant']),
+        variant: json['variant'] == null
+            ? null
+            : VariantModel.fromJson(json['variant']),
         unit: json['unit'] == null ? null : Unit.fromJson(json['unit']),
         quantity: json['quantity'],
         price: json['price'],

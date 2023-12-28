@@ -37,11 +37,9 @@ class OrderRepositoryImpl implements OrderRepository {
 
       final res =
           await _dio.dio().post(Api.order, data: payload);
-      final data = OrderModel.fromJson(res.data['data']);
       return BaseResponseModel(
         code: res.data['code'],
         message: res.data['message'],
-        data: data,
       );
     } catch (e) {
       if (kDebugMode) {
@@ -103,6 +101,51 @@ class OrderRepositoryImpl implements OrderRepository {
         code: res.data['code'],
         message: res.data['message'],
         data: data,
+      );
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error =============================================== \n $e');
+      }
+      return BaseResponseModel(
+        code: 400,
+        message: e.toString(),
+      );
+    }
+  }
+  
+  @override
+  Future<BaseResponseModel<OrderModel>> getDetailOrder({required String id}) async {
+    try {
+      final res =
+          await _dio.dio().get('${Api.order}$id/');
+      final data = OrderModel.fromJson(res.data['data']);
+      return BaseResponseModel(
+        code: res.data['code'],
+        message: res.data['message'],
+        data: data,
+      );
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error =============================================== \n $e');
+      }
+      return BaseResponseModel(
+        code: 400,
+        message: e.toString(),
+      );
+    }
+  }
+  
+  @override
+  Future<BaseResponseModel<OrderModel?>> updateStatusOrder({required String id, required StatusOrder status}) async {
+    try {
+      final payload = {
+        'status': status.getValue,
+      };
+      final res =
+          await _dio.dio().put('${Api.updateStatusOrder}$id/', data: payload);
+      return BaseResponseModel(
+        code: res.data['code'],
+        message: res.data['message'],
       );
     } catch (e) {
       if (kDebugMode) {

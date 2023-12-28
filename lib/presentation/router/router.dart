@@ -37,5 +37,6 @@ class AppRouter extends $AppRouter {
     // Order
     AutoRoute(page: OrderCreateRoute.page),
     AutoRoute(page: OrderListRoute.page),
+    AutoRoute(page: OrderDetailRoute.page),
   ];
 }

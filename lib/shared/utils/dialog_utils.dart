@@ -85,35 +85,38 @@ class DialogUtils {
       context: context,
       builder: (context) {
         return Dialog(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 12,
-              ),
-              Text(content),
-              const SizedBox(
-                height: 12,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
+          child: Container(
+            padding: const EdgeInsets.all(sp16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 12,
+                ),
+                Text(content),
+                const SizedBox(
+                  height: 12,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text("CANCEL")),
+                    TextButton(
                       onPressed: () {
                         Navigator.of(context).pop();
+                        okButton();
                       },
-                      child: const Text("CANCEL")),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      okButton();
-                    },
-                    child: const Text("OK"),
-                  )
-                ],
-              )
-            ],
+                      child: const Text("OK"),
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
         );
       },

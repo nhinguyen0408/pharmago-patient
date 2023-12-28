@@ -35,6 +35,15 @@ abstract class OrderRepository {
     String? page,
   });
 
+  Future<BaseResponseModel<OrderModel>> getDetailOrder({
+    required String id,
+  });
+
+  Future<BaseResponseModel<OrderModel?>> updateStatusOrder({
+    required String id,
+    required StatusOrder status,
+  });
+
   Future<BaseResponseModel<List<CountOrderModel>>> countOrder();
 
   Future<BaseResponseModel<OrderModel?>> createOrder({

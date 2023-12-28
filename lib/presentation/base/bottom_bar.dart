@@ -72,7 +72,7 @@ class BuildBottomBar extends StatelessWidget {
                     Text(
                       e.title,
                       style: TextStyle(
-                        fontSize: 8,
+                        fontSize: 10,
                         fontWeight:
                             pageCode == e ? FontWeight.w500 : FontWeight.w400,
                         color: pageCode == e ? mainColor : greyColor,
