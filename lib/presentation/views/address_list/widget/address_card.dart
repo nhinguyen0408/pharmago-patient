@@ -7,10 +7,11 @@ import 'package:pharmago_patient/presentation/views/address_list/domain/entities
 import 'package:pharmago_patient/shared/views/empty_container.dart';
 
 class AddressCard extends StatelessWidget {
-  const AddressCard({super.key, required this.data, this.onHandel});
+  const AddressCard({super.key, required this.data, this.onHandelLeft, this.onHandelRight});
 
   final AddressEntity data;
-  final Function()? onHandel;
+  final Function()? onHandelLeft;
+  final Function()? onHandelRight;
 
   @override
   Widget build(BuildContext context) {
@@ -38,19 +39,21 @@ class AddressCard extends StatelessWidget {
                 ),
                 const Spacer(),
                 Visibility(
-                  visible: data.isDefault != null && data.isDefault!,
-                  child: Text('Mặc định', style: p5.copyWith(color: mainColor),)
-                ),
+                    visible: data.isDefault != null && data.isDefault!,
+                    child: Text(
+                      'Mặc định',
+                      style: p5.copyWith(color: mainColor),
+                    )),
               ],
             ),
             const SizedBox(height: sp16),
             Text(
-              data.fullName ?? 'error',
+              data.fullName ?? '',
               style: p6.copyWith(color: greyColor),
             ),
             const SizedBox(height: sp8),
             Text(
-              data.title ?? 'error',
+              data.title ?? '',
               style: p6.copyWith(color: greyColor),
             ),
             const SizedBox(height: sp8),
@@ -59,16 +62,41 @@ class AddressCard extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(
-                      child: ExtraButton(
-                    title: 'Địa chỉ mặc định',
-                    event: onHandel,
-                    largeButton: false,
-                    icon: const Icon(
-                      Icons.check,
-                      color: mainColor,
+                    child: ExtraButton(
+                      title: 'Địa chỉ mặc định',
+                      event: onHandelLeft,
+                      largeButton: false,
+                      icon: const Icon(
+                        Icons.check,
+                        color: mainColor,
+                      ),
+                      backgroundColor: whiteColor,
                     ),
-                    backgroundColor: whiteColor,
-                  )),
+                  ),
+                  const SizedBox(width: sp16,),
+                  Expanded(
+                    child: ExtraButton(
+                      title: 'Thay đổi địa chỉ',
+                      event: onHandelRight,
+                      largeButton: false,
+                      backgroundColor: whiteColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Visibility(
+              visible: data.isDefault != null && data.isDefault!,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ExtraButton(
+                      title: 'Thay đổi địa chỉ',
+                      event: onHandelRight,
+                      largeButton: false,
+                      backgroundColor: whiteColor,
+                    ),
+                  ),
                 ],
               ),
             ),

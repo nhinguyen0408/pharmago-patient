@@ -366,7 +366,7 @@ Widget AppInputSupport({
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(radius ?? 8),
             borderSide: const BorderSide(
-              color: whiteColor,
+              color: mainColor,
               width: 1,
             ),
           ),

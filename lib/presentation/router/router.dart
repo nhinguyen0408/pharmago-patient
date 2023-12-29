@@ -33,6 +33,7 @@ class AppRouter extends $AppRouter {
 
     // Address
     AutoRoute(page: AddressListRoute.page),
+    AutoRoute(page: AddressCreateRoute.page),
 
     // Order
     AutoRoute(page: OrderCreateRoute.page),

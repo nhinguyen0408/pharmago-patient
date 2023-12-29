@@ -14,8 +14,8 @@ class AddressModel {
   final String? phone;
   final bool? isDefault;
   final String? title;
-  final int? lat;
-  final int? long;
+  final double? lat;
+  final double? long;
   final String? createdAt;
   final String? updatedAt;
   final int? account;
@@ -45,8 +45,8 @@ class AddressModel {
     String? phone,
     bool? isDefault,
     String? title,
-    int? lat,
-    int? long,
+    double? lat,
+    double? long,
     String? createdAt,
     String? updatedAt,
     int? account,

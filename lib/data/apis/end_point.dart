@@ -31,6 +31,10 @@ class Api {
 
   // Address
   static String address = '$baseURL/v1/api/address/';
+  static String province = '$baseURL/v1/api/province/';
+  static String district = '$baseURL/v1/api/district/';
+  static String ward = '$baseURL/v1/api/ward/';
+
 
   // Order
   static String order = '$baseURL/api/v1/orders/';

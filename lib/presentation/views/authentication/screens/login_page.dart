@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmago_patient/presentation/router/router.gr.dart';
 import 'package:pharmago_patient/presentation/shared/utils/validate.dart';
-import 'package:pharmago_patient/shared/constants/pref_key.dart';
-import 'package:pharmago_patient/shared/constants/storage/shared_preference.dart';
 import 'package:pharmago_patient/shared/utils/dialog_utils.dart';
 
 import '../../../base/button.dart';
