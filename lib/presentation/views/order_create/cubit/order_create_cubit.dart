@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:pharmago_patient/presentation/views/address_list/domain/usecase/get_list_address_use_case.dart';
 import 'package:pharmago_patient/presentation/views/cart/domain/entities/cart_entity.dart';
 import 'package:pharmago_patient/presentation/views/order_create/cubit/order_create_state.dart';
+import 'package:pharmago_patient/presentation/views/order_list/domain/entities/order_item_payload.dart';
 import 'package:pharmago_patient/presentation/views/order_list/domain/usecase/create_order_use_case.dart';
 
 @injectable
@@ -97,17 +98,18 @@ class OrderCreateCubit extends Cubit<OrderCreateState> {
   }
 
   Future<bool> createOrder() async {
-    bool flag = false;
-    for (var element in state.orderItems) {
-      final input = CreateOrderInput(
-        workspace: element.drugstore!.id!.toString(),
-        address: state.userAddressDefault!.id!,
-        cartItems: element.orderItems,
-      );
+    final input = CreateOrderInput(
+      address: state.userAddressDefault!.id!,
+      orderItems: state.orderItems.map(
+        (e) => OrderItemPayload(
+          note: state.note,
+          workspace: e.drugstore!.id,
+          cartItems: e.orderItems
+        )
+      ).toList(),
+    );
 
-      final res = await _createOrderUsecase.execute(input);
-      flag = res.response.code == 200;
-    }
-    return flag;
+    final res = await _createOrderUsecase.execute(input);
+    return res.response.code == 200;
   }
 }

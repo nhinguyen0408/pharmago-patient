@@ -6,6 +6,7 @@ import 'package:pharmago_patient/data/models/base/response.dart';
 import 'package:pharmago_patient/presentation/views/cart/domain/entities/cart_entity.dart';
 import 'package:pharmago_patient/presentation/views/order_list/data/models/order_count_model.dart';
 import 'package:pharmago_patient/presentation/views/order_list/data/models/order_model.dart';
+import 'package:pharmago_patient/presentation/views/order_list/domain/entities/order_item_payload.dart';
 import 'package:pharmago_patient/presentation/views/order_list/domain/repositories/order_repository.dart';
 
 @LazySingleton(as: OrderRepository)
@@ -15,24 +16,24 @@ class OrderRepositoryImpl implements OrderRepository {
   OrderRepositoryImpl(this._dio);
   @override
   Future<BaseResponseModel<OrderModel?>> createOrder({
-    required int workspace,
     required int address,
-    String? note,
-    required List<CartEntity> cartItems,
+    required List<OrderItemPayload> orderItems,
   }) async {
     try {
-      final orderItem = cartItems.map((item) => <String, dynamic> {
-        'variant': item.variant!.id,
-        'quantity': item.quantity!,
-        'price': item.variant!.price!.toInt(),
-        'unit': item.unit!.id!,
-      }).toList();
-
       final Map<String, dynamic> payload = {
-        'workspace': workspace,
         'address': address,
-        if (note != null && note != '') 'note': note,
-        'items': orderItem
+          'orders': orderItems.map(
+          (item) => {
+            'note': item.note,
+            'workspace': item.workspace,
+            'items': item.cartItems.map((item) => <String, dynamic> {
+              'variant': item.variant!.id,
+              'quantity': item.quantity!,
+              'price': item.variant!.price!.toInt(),
+              'unit': item.unit!.id!,
+            }).toList(),
+          }
+        ).toList(),
       };
 
       final res =

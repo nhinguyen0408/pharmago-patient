@@ -423,7 +423,10 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
           titleClose: 'Quay lại',
           accept: () {
             Navigator.of(context).pop();
-            context.router.replace(OrderListRoute(status: StatusOrder.NEW));
+            context.router.popUntil(
+              (route) => route.settings.name == 'HomeRoute',
+            );
+            context.router.push(OrderListRoute(status: StatusOrder.NEW));
           },
           close: () {
             Navigator.pop(context);

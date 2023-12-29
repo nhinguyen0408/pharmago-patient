@@ -6,6 +6,7 @@ import 'package:pharmago_patient/domain/usecase/base/io/output.dart';
 import 'package:pharmago_patient/presentation/views/cart/domain/entities/cart_entity.dart';
 import 'package:pharmago_patient/presentation/views/order_list/data/mapper/order_mapper.dart';
 import 'package:pharmago_patient/presentation/views/order_list/domain/entities/order_entity.dart';
+import 'package:pharmago_patient/presentation/views/order_list/domain/entities/order_item_payload.dart';
 import 'package:pharmago_patient/presentation/views/order_list/domain/repositories/order_repository.dart';
 
 @injectable
@@ -20,10 +21,8 @@ class CreateOrderUsecase
       CreateOrderInput input) async {
     try {
       final res = await _orderRepository.createOrder(
-        workspace: int.parse(input.workspace),
         address: input.address,
-        note: input.note,
-        cartItems: input.cartItems,
+        orderItems: input.orderItems,
       );
       return CreateOrderOutput(BaseResponseModel<OrderEntity?>(
         code: res.code,
@@ -40,16 +39,12 @@ class CreateOrderUsecase
 }
 
 class CreateOrderInput extends BaseInput {
-  final String workspace;
   final int address;
-  final String? note;
-  final List<CartEntity> cartItems;
+  final List<OrderItemPayload> orderItems;
 
   CreateOrderInput({
-    required this.workspace,
     required this.address,
-    this.note,
-    required this.cartItems,
+    required this.orderItems,
   });
 }
 

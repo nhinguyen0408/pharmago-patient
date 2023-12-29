@@ -2,6 +2,7 @@ import 'package:pharmago_patient/data/models/base/response.dart';
 import 'package:pharmago_patient/presentation/views/cart/domain/entities/cart_entity.dart';
 import 'package:pharmago_patient/presentation/views/order_list/data/models/order_count_model.dart';
 import 'package:pharmago_patient/presentation/views/order_list/data/models/order_model.dart';
+import 'package:pharmago_patient/presentation/views/order_list/domain/entities/order_item_payload.dart';
 
 enum StatusOrder {
   NEW,
@@ -47,9 +48,7 @@ abstract class OrderRepository {
   Future<BaseResponseModel<List<CountOrderModel>>> countOrder();
 
   Future<BaseResponseModel<OrderModel?>> createOrder({
-    required int workspace,
     required int address,
-    String? note,
-    required List<CartEntity> cartItems,
+    required List<OrderItemPayload> orderItems,
   });
 }
