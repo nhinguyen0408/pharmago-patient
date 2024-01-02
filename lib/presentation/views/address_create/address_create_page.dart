@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pharmago_patient/presentation/base/button.dart';
 import 'package:pharmago_patient/presentation/base/text_field.dart';
 import 'package:pharmago_patient/presentation/constants/colors.dart';
@@ -8,12 +9,16 @@ import 'package:pharmago_patient/presentation/constants/size_device.dart';
 import 'package:pharmago_patient/presentation/constants/spacing.dart';
 import 'package:pharmago_patient/presentation/constants/typography.dart';
 import 'package:pharmago_patient/presentation/di/di.dart';
+import 'package:pharmago_patient/presentation/router/router.gr.dart';
 import 'package:pharmago_patient/presentation/views/address_create/cubit/address_create_cubit.dart';
 import 'package:pharmago_patient/presentation/views/address_create/cubit/address_create_state.dart';
 import 'package:pharmago_patient/presentation/views/address_list/cubit/address_list_cubit.dart';
+import 'package:pharmago_patient/presentation/views/address_list/data/models/payload/address_payload_model.dart';
 import 'package:pharmago_patient/presentation/views/address_list/domain/entities/address_entity.dart';
+import 'package:pharmago_patient/presentation/views/map_picker/map_picker_page.dart';
 import 'package:pharmago_patient/shared/utils/dialog_utils.dart';
 import 'package:pharmago_patient/shared/utils/event.dart';
+import 'package:pharmago_patient/shared/views/address_with_map.dart';
 
 @RoutePage()
 class AddressCreatePage extends StatefulWidget {
@@ -115,6 +120,37 @@ class _AddressCreatePageState extends State<AddressCreatePage> {
                                 readOnly: true,
                                 onTap: () =>
                                     bloc.tapToOpenBottomSheetAddress(context),
+                              ),
+                              Visibility(
+                                visible: state.addressPayload != null,
+                                child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: InkWell(
+                                    onTap: () => context.router.push(
+                                      MapPickerRoute(
+                                        onConfirm: (address, position) {
+                                          final addressPayload = AddressPayloadModel(
+                                            lat: position.latitude,
+                                            long: position.longitude,
+                                          );
+                                          bloc.changeCoordinate(addressPayload);
+                                        },
+                                        addressInit: AddressPickerEntity(
+                                          provinceId: state.addressPayload!.province,
+                                          provinceName: state.addressPayload!.provinceName,
+                                          districtId: state.addressPayload!.district,
+                                          districtName: state.addressPayload!.districtName,
+                                          wardId: state.addressPayload!.ward,
+                                          wardName: state.addressPayload!.wardName,
+                                        ),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      'Sửa định vị',
+                                      style: p5.copyWith(color: blue_1),
+                                    ),
+                                  ),
+                                ),
                               ),
                               const SizedBox(height: sp16),
                               AppInputSupport(

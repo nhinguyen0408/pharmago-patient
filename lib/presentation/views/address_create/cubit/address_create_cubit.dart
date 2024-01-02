@@ -11,12 +11,13 @@ import 'package:pharmago_patient/presentation/views/address_list/domain/usecase/
 
 @injectable
 class AddressCreateCubit extends Cubit<AddressCreateState> {
-  AddressCreateCubit(this._createAddressUsecase, this._updateAddressUsecase) : super(const AddressCreateState());
+  AddressCreateCubit(this._createAddressUsecase, this._updateAddressUsecase)
+      : super(const AddressCreateState());
   final CreateAddressUsecase _createAddressUsecase;
   final UpdateAddressUsecase _updateAddressUsecase;
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  void innitialize({ AddressEntity? addressData }) {
+  void innitialize({AddressEntity? addressData}) {
     if (addressData != null) {
       emit(state.copyWith(
         fullname: addressData.fullName ?? '',
@@ -32,6 +33,8 @@ class AddressCreateCubit extends Cubit<AddressCreateState> {
           // ward:  addressData.ward?.id,
           wardName: addressData.ward?.title,
           title: addressData.title,
+          lat: addressData.lat,
+          long: addressData.long,
         ),
       ));
     }
@@ -51,6 +54,17 @@ class AddressCreateCubit extends Cubit<AddressCreateState> {
 
   void changeIsDefaultAddress() {
     emit(state.copyWith(isDefaultAddress: !state.isDefaultAddress));
+  }
+
+  void changeCoordinate(AddressPayloadModel? value) {
+    emit(
+      state.copyWith(
+        addressPayload: state.addressPayload?.copyWith(
+          lat: value?.lat ?? 0,
+          long: value?.long ?? 0,
+        ),
+      ),
+    );
   }
 
   Future<void> tapToOpenBottomSheetAddress(BuildContext context) async {
