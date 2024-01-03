@@ -1,6 +1,9 @@
+import 'dart:ffi';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_swipe_action_cell/flutter_swipe_action_cell.dart';
 import 'package:pharmago_patient/presentation/base/button.dart';
 import 'package:pharmago_patient/presentation/base/text_field.dart';
 import 'package:pharmago_patient/presentation/constants/colors.dart';
@@ -11,6 +14,7 @@ import 'package:pharmago_patient/presentation/di/di.dart';
 import 'package:pharmago_patient/presentation/router/router.gr.dart';
 import 'package:pharmago_patient/presentation/views/cart/cubit/cart_cubit.dart';
 import 'package:pharmago_patient/presentation/views/cart/cubit/cart_state.dart';
+import 'package:pharmago_patient/presentation/views/cart/domain/entities/cart_entity.dart';
 import 'package:pharmago_patient/presentation/views/cart/widgets/vartant_card_for_cart.dart';
 import 'package:pharmago_patient/presentation/views/drugstore/domain/entities/drugstore_entity.dart';
 import 'package:pharmago_patient/shared/utils/dialog_utils.dart';
@@ -18,8 +22,9 @@ import 'package:pharmago_patient/shared/utils/event.dart';
 
 @RoutePage()
 class CartPage extends StatefulWidget {
-  const CartPage({super.key});
+  const CartPage({super.key, this.onChangeQuantitySuccess});
 
+  final Function()? onChangeQuantitySuccess;
   @override
   State<CartPage> createState() => _CartPageState();
 }
@@ -49,17 +54,7 @@ class _CartPageState extends State<CartPage> {
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (BuildContext context, int index) {
                             final item = state.dataCart[index];
-                            return VariantCardForCart(
-                              dataVariant: item,
-                              onChangeQuantity: (int value) {
-                                bloc.onChangeQuantity(
-                                    variant: item, value: value);
-                              },
-                              onCheckbox: (bool? value) {
-                                bloc.onSelectItem(
-                                    indexVariant: index, value: value!);
-                              },
-                            );
+                            return _itemSwipe(context, index, item);
                           },
                           separatorBuilder: (BuildContext context, int index) {
                             return const SizedBox(height: sp16);
@@ -197,12 +192,79 @@ class _CartPageState extends State<CartPage> {
   ) {
     final data = bloc.state.listDataCartSelected;
     if (data.isNotEmpty) {
-      context.router.push(OrderCreateRoute(dataCart: data, drugstore: const DrugstoreEntity()));
+      context.router.push(
+          OrderCreateRoute(dataCart: data, drugstore: const DrugstoreEntity()));
     } else {
       DialogUtils.showErrorDialog(
         context,
         content: 'Vui Lòng chọn ít nhất 1 sản phẩm',
       );
     }
+  }
+
+  Widget _itemSwipe(BuildContext context, int index, CartEntity item) {
+    return SwipeActionCell(
+      key: ValueKey(index),
+      selectedForegroundColor: Colors.black.withAlpha(30),
+      trailingActions: [
+        SwipeAction(
+            performsFirstActionWithFullSwipe: true,
+            content: Container(
+              padding: const EdgeInsets.all(sp8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(sp4),
+              ),
+              child: const Align(
+                alignment: Alignment.center,
+                child: Icon(
+                  Icons.delete_forever_rounded,
+                  color: whiteColor,
+                ),
+              ),
+            ),
+            onTap: (handler) async {
+              _confirmDeleteCart(context, item);
+              // await handler(true);
+            }),
+      ],
+      child: VariantCardForCart(
+        dataVariant: item,
+        onChangeQuantity: (int value) {
+          bloc.onChangeQuantity(variant: item, value: value);
+        },
+        onCheckbox: (bool? value) {
+          bloc.onSelectItem(indexVariant: index, value: value!);
+        },
+      ),
+    );
+  }
+
+  Future<void> _confirmDeleteCart(BuildContext context, CartEntity cartItem) async {
+    DialogUtils.showDialogWithTitleAndOptionButton(
+      context,
+      content: 'Xoá sản phẩm ra khỏi giỏ hàng',
+      okButton: () {
+        _deleteCart(context, cartItem);
+      },
+    );
+  }
+
+  Future<bool> _deleteCart(BuildContext context, CartEntity cartItem) async {
+    DialogUtils.showLoadingDialog(
+      context,
+      content: 'Đang xoá sản phẩm khỏi giỏ hàng vui lòng đợi',
+    );
+    final res =
+        await bloc.onChangeQuantity(variant: cartItem, value: - cartItem.quantity!);
+    Navigator.of(context).pop();
+    if (!res) {
+      DialogUtils.showErrorDialog(
+        context,
+        content: 'Xoá sản phẩm khỏi giỏ hàng thất bại',
+      );
+    } else {
+      widget.onChangeQuantitySuccess?.call();
+    }
+    return res;
   }
 }

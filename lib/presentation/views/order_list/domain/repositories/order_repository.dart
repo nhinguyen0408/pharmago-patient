@@ -1,8 +1,8 @@
 import 'package:pharmago_patient/data/models/base/response.dart';
-import 'package:pharmago_patient/presentation/views/cart/domain/entities/cart_entity.dart';
 import 'package:pharmago_patient/presentation/views/order_list/data/models/order_count_model.dart';
 import 'package:pharmago_patient/presentation/views/order_list/data/models/order_model.dart';
 import 'package:pharmago_patient/presentation/views/order_list/domain/entities/order_item_payload.dart';
+import 'package:pharmago_patient/presentation/views/order_list/domain/entities/variant_still_in_stock_entity.dart';
 
 enum StatusOrder {
   NEW,
@@ -50,5 +50,10 @@ abstract class OrderRepository {
   Future<BaseResponseModel<OrderModel?>> createOrder({
     required int address,
     required List<OrderItemPayload> orderItems,
+  });
+
+  Future<BaseResponseModel<List<VariantStillInStockEntity>>> checkVariantStillInStock({
+    required int drugstore,
+    required List<VariantCheckInStockEntity> variants,
   });
 }

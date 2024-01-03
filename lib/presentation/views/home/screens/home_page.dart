@@ -153,7 +153,10 @@ class _HomeState extends State<Home> {
                           itemBuilder: (BuildContext context, int index) {
                             final item =
                                 widget.homeCubit.state.listDrugstores[index];
-                            return DrugstoreCard(data: item, countItemCart: widget.homeCubit.state.dataCart.length);
+                            return DrugstoreCard(
+                                data: item,
+                                countItemCart:
+                                    widget.homeCubit.state.dataCart.length);
                           },
                         ),
                       ],
@@ -166,8 +169,11 @@ class _HomeState extends State<Home> {
               top: 0,
               left: 0,
               right: 0,
-              child:
-                  PersionalHomeCard(dataUser: widget.homeCubit.state.dataUser, countItemCart: widget.homeCubit.state.dataCart.length,),
+              child: PersionalHomeCard(
+                dataUser: widget.homeCubit.state.dataUser,
+                countItemCart: widget.homeCubit.state.dataCart.length,
+                reloadDataCart: widget.homeCubit.getDataCart,
+              ),
             ),
           ],
         ),

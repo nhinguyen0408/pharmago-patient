@@ -10,6 +10,7 @@ class VariantCreateOrderCard extends StatelessWidget {
   const VariantCreateOrderCard({
     super.key,
     this.onCheckbox,
+    this.quantityInStock,
     required this.dataVariant,
     required this.onChangeQuantity,
     this.canChangeQuantity = false,
@@ -19,6 +20,7 @@ class VariantCreateOrderCard extends StatelessWidget {
   final CartEntity dataVariant;
   final Function(int) onChangeQuantity;
   final bool canChangeQuantity;
+  final int? quantityInStock;
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +48,19 @@ class VariantCreateOrderCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      dataVariant.unit?.title ?? '',
-                      style: p6.copyWith(color: greyColor),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          dataVariant.unit?.title ?? '',
+                          style: p6.copyWith(color: greyColor),
+                        ),
+                        const SizedBox(height: sp8),
+                        Visibility(
+                          visible: quantityInStock == 0,
+                          child: Text('Sản phẩm hết hàng', style: p5.copyWith(color: red_3),),
+                        ),
+                      ],
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,

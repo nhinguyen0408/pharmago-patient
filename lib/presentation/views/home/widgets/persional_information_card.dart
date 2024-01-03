@@ -12,10 +12,12 @@ class PersionalHomeCard extends StatelessWidget {
   const PersionalHomeCard({
     super.key,
     required this.dataUser,
-    this.countItemCart = 0,
+    this.countItemCart = 0, 
+    this.reloadDataCart,
   });
   final PersionalProfileEntity? dataUser;
   final int countItemCart;
+  final Function()? reloadDataCart;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +67,7 @@ class PersionalHomeCard extends StatelessWidget {
           Row(
             children: [
               InkWell(
-                onTap: () => context.router.push(const CartRoute()),
+                onTap: () => context.router.push(CartRoute(onChangeQuantitySuccess: reloadDataCart)),
                 child: Stack(
                   children: [
                     Center(

@@ -23,13 +23,16 @@ import 'package:pharmago_patient/shared/views/empty_container.dart';
 
 @RoutePage()
 class OrderCreatePage extends StatefulWidget {
-  const OrderCreatePage(
-      {super.key,
-      required this.dataCart,
-      this.canChangeQuantity = false,
-      required this.drugstore});
+  const OrderCreatePage({
+    super.key,
+    required this.dataCart,
+    this.canChangeQuantity = false,
+    this.isBuyAgain = false,
+    required this.drugstore,
+  });
   final List<CartEntity> dataCart;
   final bool canChangeQuantity;
+  final bool isBuyAgain;
   final DrugstoreEntity drugstore;
 
   @override
@@ -41,7 +44,8 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<OrderCreateCubit>(
-      create: (context) => bloc..innitialize(dataCart: widget.dataCart),
+      create: (context) => bloc
+        ..innitialize(dataCart: widget.dataCart, isBuyAgain: widget.isBuyAgain),
       child: BlocBuilder<OrderCreateCubit, OrderCreateState>(
         builder: (context, state) {
           return GestureDetector(
@@ -74,7 +78,8 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
                                   Row(
                                     children: [
                                       Text(
-                                        state.userAddressDefault?.fullName ?? '',
+                                        state.userAddressDefault?.fullName ??
+                                            '',
                                         style: h5,
                                       ),
                                       const Spacer(),
@@ -146,7 +151,8 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
                                   ),
                                   ListView.separated(
                                     shrinkWrap: true,
-                                    physics: const NeverScrollableScrollPhysics(),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     itemBuilder: (context, index) {
                                       final item = state.orderItems[index];
                                       return Column(
@@ -159,19 +165,33 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
                                             shrinkWrap: true,
                                             physics:
                                                 const NeverScrollableScrollPhysics(),
-                                            itemBuilder: (contex, indexOrderItem) {
-                                              final itemVariant =
-                                                  item.orderItems[indexOrderItem];
+                                            itemBuilder:
+                                                (contex, indexOrderItem) {
+                                              final itemVariant = item
+                                                  .orderItems[indexOrderItem];
+                                              final variantInStock = item
+                                                          .variantInStock
+                                                          .isNotEmpty &&
+                                                      indexOrderItem <
+                                                          item.variantInStock
+                                                              .length
+                                                  ? item.variantInStock[
+                                                      indexOrderItem]
+                                                  : null;
                                               return VariantCreateOrderCard(
                                                 dataVariant: itemVariant,
+                                                quantityInStock:
+                                                    variantInStock?.count,
                                                 onChangeQuantity: (int i) {
-                                                  bloc.onChangeQuantityItem(index, indexOrderItem, i);
+                                                  bloc.onChangeQuantityItem(
+                                                      index, indexOrderItem, i);
                                                 },
                                                 canChangeQuantity:
                                                     widget.canChangeQuantity,
                                               );
                                             },
-                                            separatorBuilder: (contex, indexOrderItem) {
+                                            separatorBuilder:
+                                                (context, indexOrderItem) {
                                               return const SizedBox(
                                                 height: sp8,
                                               );
@@ -187,8 +207,8 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
                                               const Spacer(),
                                               Text(
                                                 FormatCurrency(item.totalPrice),
-                                                style:
-                                                    h5.copyWith(color: mainColor),
+                                                style: h5.copyWith(
+                                                    color: mainColor),
                                               ),
                                             ],
                                           ),
@@ -236,7 +256,8 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
                                     color: bg_6,
                                   ),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       const Row(
                                         children: [
@@ -297,7 +318,8 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
                                           const Spacer(),
                                           Text(
                                             FormatCurrency(state.totalPrice),
-                                            style: h6.copyWith(color: mainColor),
+                                            style:
+                                                h6.copyWith(color: mainColor),
                                           )
                                         ],
                                       ),
@@ -406,6 +428,13 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
 
   void _buyNow(BuildContext context) async {
     if (bloc.state.userAddressDefault?.id == null) {
+      return;
+    }
+    if (bloc.checkVariantOutOfStock()) {
+      DialogUtils.showErrorDialog(
+        context,
+        content: 'Có sản phẩm hết hàng',
+      );
       return;
     } else {
       DialogUtils.showLoadingDialog(

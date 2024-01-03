@@ -35,7 +35,11 @@ class CartCubit extends Cubit<CartState> {
     final res = await _getDataCartUsecase.buildUseCase(input);
     List<CartEntity> listDataCart = res.response.data ?? [];
     listDataCart = listDataCart.map((element) {
-      return element.copyWith(selected: state.listDataCartSelected.where((item) => item.id == element.id).toList().isNotEmpty);
+      return element.copyWith(
+          selected: state.listDataCartSelected
+              .where((item) => item.id == element.id)
+              .toList()
+              .isNotEmpty);
     }).toList();
     countPrice();
     emit(state.copyWith(
@@ -49,17 +53,19 @@ class CartCubit extends Cubit<CartState> {
   }) async {
     if (value > 0) {
       final input = AddCartInput(
-          variant: variant.variant!.id!,
-          unit: variant.unit!.id!,
-          quantity: value);
+        variant: variant.variant!.id!,
+        unit: variant.unit!.id!,
+        quantity: value,
+      );
       final res = await _addCartUsecase.buildUseCase(input);
       getDataCart();
       return res.response.code == 200;
     } else {
       final input = DeleteCartInput(
-          variant: variant.variant!.id!,
-          unit: variant.unit!.id!,
-          quantity: value * (-1));
+        variant: variant.variant!.id!,
+        unit: variant.unit!.id!,
+        quantity: value * (-1),
+      );
       final res = await _deleteCartUsecase.buildUseCase(input);
       getDataCart();
       return res.response.code == 200;

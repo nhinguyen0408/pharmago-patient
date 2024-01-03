@@ -548,6 +548,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         dataCart: dataCart,
         drugstore: bloc.state.dataOrder!.workspace!,
         canChangeQuantity: true,
+        isBuyAgain: true,
       ));
     } else {
       DialogUtils.showErrorDialog(

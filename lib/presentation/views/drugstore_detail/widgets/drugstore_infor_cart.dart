@@ -87,7 +87,7 @@ class DrugstoreInformationCard extends StatelessWidget {
               Row(
                 children: [
                   InkWell(
-                    onTap: () => context.router.push(const CartRoute()),
+                    onTap: () => context.router.push(CartRoute()),
                     child: Stack(
                       children: [
                         Center(

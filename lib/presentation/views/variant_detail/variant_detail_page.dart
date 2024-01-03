@@ -340,7 +340,7 @@ class _VariantDetailPageState extends State<VariantDetailPage> {
           titleClose: 'OK',
           accept: () {
             Navigator.pop(context);
-            context.router.push(const CartRoute());
+            context.router.push(CartRoute());
           },
           close: () {
             Navigator.pop(context);
