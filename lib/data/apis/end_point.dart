@@ -16,6 +16,7 @@ class Api {
   static String activate = '$baseURL/api/account/v1/activate/';
   static String reSendOTP = '$baseURL/api/account/v1/re-send-otp/';
   static String persionalProfile = '$baseURL/api/account/v1/profile/';
+  static String checkFieldExist = '$baseURL/api/account/v1/check-exist/';
 
   static String refreshToken = '$baseURL/api/account/v1/refreshToken';
 

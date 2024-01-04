@@ -24,4 +24,9 @@ abstract class AuthenticationRepository {
   Future<BaseResponseModel> reSendOTP({
     required String email,
   });
+
+  Future<BaseResponseModel> checkFieldExist({
+    required String value,
+    required String key,
+  });
 }

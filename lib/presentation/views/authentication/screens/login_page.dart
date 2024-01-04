@@ -208,7 +208,7 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         DialogUtils.showErrorDialog(
           context,
-          content: 'Sai tên tài khoản hoặc mật khẩu',
+          content: '${value.message}',
         );
       }
     });

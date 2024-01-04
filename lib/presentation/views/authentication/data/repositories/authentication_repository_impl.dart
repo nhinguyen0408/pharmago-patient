@@ -28,10 +28,10 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
           // 'system_code': 'ADMIN',
         },
       );
-      final data = ResponseAuthModel.fromJson(res.data['data']);
+      final data = res.data['code'] == 200 ? ResponseAuthModel.fromJson(res.data['data']) : null;
       return BaseResponseModel(
         code: res.data['code'],
-        message: res.data['message'],
+        message: res.data['code'] == 200 ? res.data['message'] : res.data['data'].toString(),
         data: data,
       );
     } catch (e) {
@@ -114,6 +114,30 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
         code: res.data['code'],
         message: res.data['message'],
         data: res.data['data'],
+      );
+    } catch (e) {
+      if(kDebugMode) {
+        print('Error =============================================== \n $e');
+      }
+      return BaseResponseModel(
+        code: 400,
+        message: e.toString(),
+      );
+    }
+  }
+  
+  @override
+  Future<BaseResponseModel> checkFieldExist({required String value, required String key,}) async {
+    try {
+      final Map<String, String> payload = {
+        'key': key,
+        'value': value,
+      };
+      final res = await _dio.dio().post(Api.checkFieldExist, data: payload);
+      return BaseResponseModel(
+        code: res.data['code'],
+        message: res.data['message'],
+        data: res.data['code'] != 200 ? res.data['data']['message'] : null,
       );
     } catch (e) {
       if(kDebugMode) {

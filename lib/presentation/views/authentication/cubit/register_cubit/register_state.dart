@@ -20,8 +20,7 @@ class RegisterState with _$RegisterState {
     @Default('') String confirmPassword,
     @Default(false) bool showConfirmPassword,
     @Default(false) bool showPassword,
-
-
+    @Default(false) bool isExistedEmail,
     @Default(false) bool isLoading,
     @Default(AccountTypeEnum.admin) AccountTypeEnum accountType,
   }) = _RegisterState;
